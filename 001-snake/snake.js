@@ -1,23 +1,15 @@
 import {
   dropFirst,
   dropLast,
-  map,
   merge,
   mod,
   prop,
   rnd,
   spec,
 } from './base.js';
+import CONSTANTS from './constants.json' with { type: 'json' };
 
-map((p) => (global[p] = base[p]));
-
-// Constants
-const NORTH = { x: 0, y: -1 };
-const SOUTH = { x: 0, y: 1 };
-const EAST = { x: 1, y: 0 };
-const WEST = { x: -1, y: 0 };
-const INITIAL_MOVE = [EAST];
-const NON_SNAKE = [];
+const { NORTH, EAST, SOUTH, WEST, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
 
 // Point operations
 const pointEq = (p1) => (p2) => p1.x == p2.x && p1.y == p2.y;
@@ -56,12 +48,12 @@ const rndPos = (table) => ({
 });
 
 // Initial state
-const initialState = () => ({
-  cols: 20,
-  rows: 14,
+const initialState = (cols= 40, rows = 28) => ({
+  cols,
+  rows,
   moves: INITIAL_MOVE,
   snake: NON_SNAKE,
-  apple: { x: 16, y: 2 },
+  apple: { x: rnd(0)(cols), y: rnd(0)(rows) },
 });
 
 const next = spec({
@@ -77,7 +69,5 @@ const enqueue = (state, move) =>
     ? merge(state)({ moves: state.moves.concat([move]) })
     : state;
 
-const Snake = { EAST, NORTH, SOUTH, WEST, initialState, enqueue, next };
-
-// export { EAST, NORTH, SOUTH, WEST, initialState, enqueue, next };
+const Snake = { NORTH, EAST, SOUTH, WEST, initialState, enqueue, next };
 export default Snake;
