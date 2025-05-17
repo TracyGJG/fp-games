@@ -3,7 +3,7 @@ import { adjust, id, k, map, pipe, rep } from './base.js';
 import Snake from './snake.js';
 import CONSTANTS from './constants.json' with { type: 'json' };
 
-const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, NEW_LINE, CELL, CRASH, SNAKE } = CONSTANTS;
+const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, NEW_LINE, APPLE, CELL, CRASH, SNAKE } = CONSTANTS;
 // map((p) => (global[p] = base[p]));
 
 // Mutable state
@@ -39,7 +39,7 @@ process.stdin.on('keypress', (_str, key) => {
 });
 
 // Game loop
-const show = () =>
+const show = () => 
   console.log(`\x1Bc${Matrix.toString(Matrix.fromState(State))}`);
 const step = () => (State = Snake.next(State));
 
@@ -47,4 +47,4 @@ const step = () => (State = Snake.next(State));
 setInterval(() => {
   step();
   show();
-}, 100);
+}, FRAME_RATE);
