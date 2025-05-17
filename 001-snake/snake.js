@@ -7,6 +7,7 @@ import {
   rnd,
   spec,
 } from './base.js';
+
 import CONSTANTS from './constants.json' with { type: 'json' };
 
 const { NORTH, EAST, SOUTH, WEST, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
@@ -48,7 +49,7 @@ const rndPos = (table) => ({
 });
 
 // Initial state
-const initialState = (cols= 40, rows = 28) => ({
+const initialState = (cols= 40, rows = 30) => ({
   cols,
   rows,
   moves: INITIAL_MOVE,
