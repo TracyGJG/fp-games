@@ -1,26 +1,23 @@
 import readline from 'readline';
-
 import { adjust, id, k, map, pipe, rep } from './base.js';
 import Snake from './snake.js';
-
 import CONSTANTS from './constants.json' with { type: 'json' };
 
-const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, CHARS } = CONSTANTS;
-
-map((p) => (global[p] = base[p]));
+const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, NEW_LINE, CELL, CRASH, SNAKE } = CONSTANTS;
+// map((p) => (global[p] = base[p]));
 
 // Mutable state
 let State = Snake.initialState();
 
 // Matrix operations
-const chars = _ => `\x1B[1;${CHARS[_]}`;
+const chars = _ => `\x1B[1;${_}`;
 const Matrix = {
-  make: (table) => rep(rep(chars('cell'))(table.cols))(table.rows),
+  make: (table) => rep(rep(chars(CELL))(table.cols))(table.rows),
   set: (val) => (pos) => adjust(pos.y)(adjust(pos.x)(k(val))),
-  addSnake: (state) => pipe(...map(Matrix.set(chars('snake')))(state.snake)),
-  addApple: (state) => Matrix.set(chars('apple'))(state.apple),
-  addCrash: (state) => (state.snake.length == 0 ? map(map(k(chars('crash')))) : id),
-  toString: (xsxs) => xsxs.map((xs) => xs.join(' ')).join('\r\n'),
+  addSnake: (state) => pipe(...map(Matrix.set(chars(SNAKE)))(state.snake)),
+  addApple: (state) => Matrix.set(chars(APPLE))(state.apple),
+  addCrash: (state) => (state.snake.length == 0 ? map(map(k(chars(CRASH)))) : id),
+  toString: (xsxs) => xsxs.map((xs) => xs.join(' ')).join(NEW_LINE),
   fromState: (state) =>
     pipe(
       Matrix.make,

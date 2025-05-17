@@ -24,10 +24,9 @@
     "apple": "rgb(255,50,0)",
     "crash": "rgb(0,0,255)"
   },
-  "CHARS": {
-    "cell": "97m.",
-    "snake": "92m#",
-    "apple": "91mO",
-    "crash": "34mX"
-  }
+  "APPLE": "91mO",
+  "CELL": "97m.",
+  "CRASH": "34mX",
+  "SNAKE": "92m#",
+  "NEW_LINE": "\r\n"
 }

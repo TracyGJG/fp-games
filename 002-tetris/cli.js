@@ -1,118 +1,64 @@
-// General functions
-const add = (x) => (y) => x + y;
-const all = (f) => pipe(map(f), reduce(and)(true));
-const and = (x) => (y) => x && y;
-const any = (f) => pipe(map(f), reduce(or)(false));
-const append = (x) => (xs) => [...xs, x];
-const both = (f) => (g) => (x) => f(x) && g(x);
-const concat = (x1) => (x2) => x1.concat(x2);
-const eq = (x) => (y) => x == y;
-const flip = (f) => (x) => (y) => f(y)(x);
-const filter = (f) => (xs) => xs.filter(f);
-const find = (f) => (xs) => xs.find(f);
-const gt = (x) => (y) => x > y;
-const id = (x) => x;
-const ifelse = (c) => (t) => (f) => (x) => c(x) ? t(x) : f(x);
-const join = (s) => (xs) => xs.join(s);
-const k = (x) => (_) => x;
-const lt = (x) => (y) => x < y;
-const map = (f) => (xs) => xs.map(f);
-const mapi = (f) => (xs) => xs.map((x, i) => f(x)(i));
-const mirror = (xsxs) => xsxs.map((xs) => xs.reverse());
-const not = (f) => (x) => !f(x);
-const or = (x) => (y) => x || y;
-const pipe =
-  (...fs) =>
-  (x) =>
-    [...fs].reduce((acc, f) => f(acc), x);
-const prop = (p) => (o) => o[p];
-const range = (min) => (max) => [...Array(max).keys()].map((_, i) => i + min);
-const reduce = (f) => (z) => (xs) => xs.reduce((acc, x) => f(acc)(x), z);
-const rep = (c) => (n) => map(k(c))(range(0)(n));
-const transpose = (xsxs) => xsxs[0].map((col, i) => xsxs.map((row) => row[i]));
+import readline from 'readline';
+import {
+  add,
+  all,
+  any,
+  append,
+  both,
+  concat,
+  eq,
+  flip,
+  filter,
+  find,
+  gt,
+  id,
+  ifelse,
+  join,
+  k,
+  lt,
+  map,
+  mapi,
+  mirror,
+  not,
+  pipe,
+  prop,
+  reduce,
+  rep,
+  transpose,
+} from './base.js';
 
-const Color = {};
-Color.black = (s) => `\x1b[30m${s}\x1b[0m`;
-Color.red = (s) => `\x1b[31m${s}\x1b[0m`;
-Color.green = (s) => `\x1b[32m${s}\x1b[0m`;
-Color.yellow = (s) => `\x1b[33m${s}\x1b[0m`;
-Color.blue = (s) => `\x1b[34m${s}\x1b[0m`;
-Color.magenta = (s) => `\x1b[35m${s}\x1b[0m`;
-Color.cyan = (s) => `\x1b[36m${s}\x1b[0m`;
-Color.white = (s) => `\x1b[37m${s}\x1b[0m`;
+import CONSTANTS from './constants.json' with { type: 'json' };
+const { CHAR_COLOURS, Pieces } = CONSTANTS;
 
-const Pieces = {
-  I: [
-    [0, 0, 0, 0],
-    [1, 1, 1, 1],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ],
-  O: [
-    [2, 2],
-    [2, 2],
-  ],
-  T: [
-    [0, 3, 0],
-    [3, 3, 3],
-    [0, 0, 0],
-  ],
-  S: [
-    [0, 4, 4],
-    [4, 4, 0],
-    [0, 0, 0],
-  ],
-  Z: [
-    [0, 0, 0],
-    [5, 5, 0],
-    [0, 5, 5],
-  ],
-  J: [
-    [0, 0, 0],
-    [6, 6, 6],
-    [0, 0, 6],
-  ],
-  L: [
-    [0, 0, 7],
-    [7, 7, 7],
-    [0, 0, 0],
-  ],
-};
+const applyColour = (colCode) => (s) => colCode ? `\x1b[${colCode}m${s}\x1b[0m` : s;
+const Color = Object.entries(CHAR_COLOURS).reduce((cols, [col, code]) => ({...cols, 
+  [col]: applyColour(code)
+}), {});
 
 const Piece = {};
 Piece.rand = () => Random.pick(Object.values(Pieces));
 Piece.toStr = (n) => {
   switch (n) {
     case 0:
-      return ' ';
-      break;
+      return '  ';
     case 1:
-      return Color.cyan('▓');
-      break;
+      return Color.cyan('▓▓');
     case 2:
-      return Color.yellow('▓');
-      break;
+      return Color.yellow('▓▓');
     case 3:
-      return Color.magenta('▓');
-      break;
+      return Color.magenta('▓▓');
     case 4:
-      return Color.green('▓');
-      break;
+      return Color.green('▓▓');
     case 5:
-      return Color.red('▓');
-      break;
+      return Color.red('▓▓');
     case 6:
-      return Color.blue('▓');
-      break;
+      return Color.blue('▓▓');
     case 7:
-      return Color.white('▓');
-      break;
+      return Color.white('▓▓');
     case -1:
-      return ' ';
-      break;
+      return '  ';
     default:
-      return '░';
-      break;
+      return '░░';
   }
 };
 
@@ -120,14 +66,14 @@ const Matrix = {};
 Matrix.sum = pipe(map(reduce(add)(0)), reduce(add)(0));
 Matrix.toStr = (x) => pipe(map(join(' ')), join('\r\n'))(x);
 Matrix.row = (x) => (m) => rep(x)(m[0].length);
-Matrix.frame = (m) => append(Matrix.row('▔')(m))(m);
+Matrix.frame = (m) => append(Matrix.row('▔▔')(m))(m);
 Matrix.rotate = pipe(transpose, mirror);
 Matrix.make = (rows) => (cols) => rep(rep(0)(cols))(rows);
 Matrix.mount = (f) => (pos) => (m1) => (m2) =>
   mapi(
     (row) => (y) =>
       mapi(
-        (val) => (x) =>
+        (_val) => (x) =>
           y >= pos.y &&
           y - pos.y < m1.length &&
           x >= pos.x &&
@@ -235,10 +181,9 @@ Board.mount = (p) => Matrix.mount((o) => (n) => n != 0 ? n : o)(p)(p.piece);
 Board.valid = (b1) => (b2) => Matrix.sum(b1) == Matrix.sum(b2);
 
 // Key events
-const readline = require('readline');
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
-process.stdin.on('keypress', (str, key) => {
+process.stdin.on('keypress', (_str, key) => {
   if (key.ctrl && key.name === 'c') process.exit();
   switch (key.name.toUpperCase()) {
     case 'LEFT':
