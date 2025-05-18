@@ -18,7 +18,7 @@ const pointEq = (p1) => (p2) => p1.x == p2.x && p1.y == p2.y;
 // Booleans
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
 const willCrash = (state) => state.snake.find(pointEq(nextHead(state)));
-const validMove = (move) => (state) =>
+const validMove = (move) => (state) => 
   state.moves[0].x + move.x != 0 || state.moves[0].y + move.y != 0;
 
 // Next values based on state
@@ -65,10 +65,9 @@ const next = spec({
   apple: nextApple,
 });
 
-const enqueue = (state, move) =>
-  validMove(move)(state)
-    ? merge(state)({ moves: state.moves.concat([move]) })
-    : state;
+const enqueue = (state, move) => validMove(move)(state)
+      ? merge(state)({ moves: state.moves.concat([move]) })
+      : state;
 
 const Snake = { NORTH, EAST, SOUTH, WEST, initialState, enqueue, next };
 export default Snake;

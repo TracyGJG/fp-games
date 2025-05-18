@@ -25,15 +25,16 @@ import {
   reduce,
   rep,
   transpose,
-} from './base.js';
+} from './general.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { CHAR_COLOURS, Pieces } = CONSTANTS;
+const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, CHAR_COLOURS, Pieces } = CONSTANTS;
 
 const applyColour = (colCode) => (s) => colCode ? `\x1b[${colCode}m${s}\x1b[0m` : s;
 const Color = Object.entries(CHAR_COLOURS).reduce((cols, [col, code]) => ({...cols, 
   [col]: applyColour(code)
 }), {});
+let timer;
 
 const Piece = {};
 Piece.rand = () => Random.pick(Object.values(Pieces));
@@ -64,7 +65,9 @@ Piece.toStr = (n) => {
 
 const Matrix = {};
 Matrix.sum = pipe(map(reduce(add)(0)), reduce(add)(0));
-Matrix.toStr = (x) => pipe(map(join(' ')), join('\r\n'))(x);
+Matrix.toStr = (x) => pipe(
+  map(join('')), 
+  join('\r\n'))(x);
 Matrix.row = (x) => (m) => rep(x)(m[0].length);
 Matrix.frame = (m) => append(Matrix.row('▔▔')(m))(m);
 Matrix.rotate = pipe(transpose, mirror);
@@ -95,7 +98,7 @@ Player.move = (d) => (p) => ({
 (Player.make = () => ({ x: 3, y: 0, piece: Piece.rand() })),
   (Player.rotate = (p) => ({ ...p, piece: Matrix.rotate(p.piece) }));
 
-const State = {};
+const State= {};
 State.toMatrix = (s) => Board.mount(s.player)(s.board);
 State.make = k({
   time: 0,
@@ -141,6 +144,7 @@ State.rotate = (s) =>
           id,
         ])(s.player),
       };
+State.quitApp = () => process.exit();
 State.swipe = (s) => ({
   ...s,
   board: s.board.map(
@@ -184,37 +188,34 @@ Board.valid = (b1) => (b2) => Matrix.sum(b1) == Matrix.sum(b2);
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 process.stdin.on('keypress', (_str, key) => {
-  if (key.ctrl && key.name === 'c') process.exit();
-  switch (key.name.toUpperCase()) {
-    case 'LEFT':
-      STATE = State.moveLeft(STATE);
-      break;
-    case 'RIGHT':
-      STATE = State.moveRight(STATE);
-      break;
-    case 'DOWN':
-      STATE = State.moveDown(STATE);
-      break;
-    case 'UP':
-      STATE = State.rotate(STATE);
-      break;
-  }
+  const action = KEY_MAPPINGS.find(([_action, keys]) =>
+    keys.includes(key.name.toUpperCase())
+  );
+  action && (STATE = State[action[0]](STATE));
 });
 
 // Game loop
 let STATE = State.make();
 const step = () => (STATE = State.next(STATE));
-const show = () =>
+const show = () => {
+  const isFinished = STATE.board.every(row => /[1-7]/.test(row.join()));
   console.log(
-    '\x1Bc' +
-      pipe(
+    `\x1Bc${pipe(
         State.toMatrix,
         map(map(Piece.toStr)),
         Matrix.frame,
         Matrix.toStr
-      )(STATE)
+      )(STATE)}
+  ${isFinished ? 'GAME OVER' : ''}
+      `
+      // Score: ${STATE}
   );
-setInterval(() => {
+  if (isFinished) {
+    clearInterval(timer);
+    process.exit();
+  }
+};
+timer = setInterval(() => {
   step();
   show();
-}, 30);
+}, FRAME_RATE);

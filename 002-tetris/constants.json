@@ -53,12 +53,13 @@
     ["WEST", ["D", "L", "ARROWRIGHT"]]
   ],
   "CLI_KEY_MAPPINGS": [
-    ["NORTH", ["W", "K", "UP"]],
-    ["EAST", ["A", "H", "LEFT"]],
-    ["SOUTH", ["S", "J", "DOWN"]],
-    ["WEST", ["D", "L", "RIGHT"]]
+    ["rotate", ["W", "K", "UP"]],
+    ["moveLeft", ["A", "H", "LEFT"]],
+    ["moveDown", ["S", "J", "DOWN"]],
+    ["moveRight", ["D", "L", "RIGHT"]],
+    ["quitApp", ["ESCAPE"]]
   ],
-  "FRAME_RATE": 100,
+  "FRAME_RATE": 50,
   "COLOURS": {
     "background": "#333",
     "base": "#777"

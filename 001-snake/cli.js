@@ -31,11 +31,11 @@ const Matrix = {
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 process.stdin.on('keypress', (_str, key) => {
-  if (key.ctrl && key.name === 'c') process.exit();
-  const keyMap = KEY_MAPPINGS.find(([_key, codes]) =>
+  if (key.name === 'escape') process.exit();
+  const action = KEY_MAPPINGS.find(([_key, codes]) =>
     codes.includes(key.name.toUpperCase())
   );
-  keyMap && (State = Snake.enqueue(State, Snake[keyMap[0]]));
+  action && (State = Snake.enqueue(State, Snake[action[0]]));
 });
 
 // Game loop

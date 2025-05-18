@@ -9,5 +9,5 @@ const initialState = () => ({
 const enqueue = () => {};
 const next = () => {};
 
-const Tetris = { initialState, enqueue, next };
+const Tetris = { initialState, enqueue, next};
 export default Tetris;
