@@ -4,7 +4,7 @@ import Snake from './snake.js';
 import CONSTANTS from './constants.json' with { type: 'json' };
 
 const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, NEW_LINE, APPLE, CELL, CRASH, SNAKE } = CONSTANTS;
-// map((p) => (global[p] = base[p]));
+
 
 // Mutable state
 let State = Snake.initialState();
@@ -34,8 +34,8 @@ process.stdin.on('keypress', (_str, key) => {
   if (key.name === 'escape') process.exit();
   const action = KEY_MAPPINGS.find(([_key, codes]) =>
     codes.includes(key.name.toUpperCase())
-  );
-  action && (State = Snake.enqueue(State, Snake[action[0]]));
+  )?.[0];
+  State = Snake.enqueue(State, action);
 });
 
 // Game loop

@@ -1,7 +1,7 @@
 import Snake from './snake.js';
 import CONSTANTS from './constants.json' with { type: 'json' };
 
-const { WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, COLOURS } = CONSTANTS;
+const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, COLOURS } = CONSTANTS;
 
 const { initialState, enqueue, next } = Snake;
 const canvas = document.getElementById('canvas');
@@ -12,8 +12,8 @@ const FULL_CIRCLE = 2 * Math.PI;
 let state = initialState();
 
 // Position helpers
-const x = (c) => Math.round((c * canvas.width) / state.cols);
-const y = (r) => Math.round((r * canvas.height) / state.rows);
+const x = (c) => Math.round((c * canvas.width) / COLS);
+const y = (r) => Math.round((r * canvas.height) / ROWS);
 const X_OFFSET = x(0.5);
 const Y_OFFSET = y(0.5);
 const CELL_WIDTH = x(1);
@@ -63,10 +63,10 @@ const step = (t1) => (t2) => {
 
 // Key events
 window.addEventListener('keydown', (e) => {
-  const keyMap = KEY_MAPPINGS.find(([_key, codes]) =>
+  const action = KEY_MAPPINGS.find(([_key, codes]) =>
     codes.includes(e.key.toUpperCase())
-  );
-  keyMap && (state = enqueue(state, Snake[keyMap[0]]));
+  )?.[0];
+  state = enqueue(state, action);
 });
 
 // Main

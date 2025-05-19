@@ -1,8 +1,12 @@
 {
-  "NORTH": { "x": 0, "y": -1 },
-  "EAST": { "x": -1, "y": 0 },
-  "SOUTH": { "x": 0, "y": 1 },
-  "WEST": { "x": 1, "y": 0 },
+  "COLS": 40,
+  "ROWS": 30,
+  "MOVES": {
+    "NORTH": { "x": 0, "y": -1 },
+    "EAST": { "x": -1, "y": 0 },
+    "SOUTH": { "x": 0, "y": 1 },
+    "WEST": { "x": 1, "y": 0 }
+  },
   "INITIAL_MOVE": [{ "x": 1, "y": 0 }],
   "NON_SNAKE": [],
   "WEB_KEY_MAPPINGS": [

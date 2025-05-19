@@ -3,23 +3,22 @@ import {
   dropLast,
   merge,
   mod,
+  pointEq,
   prop,
   rnd,
+  rndPos,
   spec,
 } from './base.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 
-const { NORTH, EAST, SOUTH, WEST, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
-
-// Point operations
-const pointEq = (p1) => (p2) => p1.x == p2.x && p1.y == p2.y;
+const { COLS, ROWS, MOVES, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
 
 // Booleans
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
 const willCrash = (state) => state.snake.find(pointEq(nextHead(state)));
-const validMove = (move) => (state) => 
-  state.moves[0].x + move.x != 0 || state.moves[0].y + move.y != 0;
+const validMove = (move, state) => move &&
+  (state.moves[0].x + move.x != 0 || state.moves[0].y + move.y != 0);
 
 // Next values based on state
 const nextMoves = (state) =>
@@ -42,19 +41,14 @@ const nextSnake = (state) =>
         willEat(state) ? state.snake : dropLast(state.snake)
       );
 
-// Randomness
-const rndPos = (table) => ({
-  x: rnd(0)(table.cols - 1),
-  y: rnd(0)(table.rows - 1),
-});
 
 // Initial state
-const initialState = (cols= 40, rows = 30) => ({
-  cols,
-  rows,
+const initialState = () => ({
+  cols: COLS,
+  rows: ROWS,
   moves: INITIAL_MOVE,
   snake: NON_SNAKE,
-  apple: { x: rnd(0)(cols), y: rnd(0)(rows) },
+  apple: { x: rnd(0)(COLS), y: rnd(0)(ROWS) },
 });
 
 const next = spec({
@@ -65,9 +59,9 @@ const next = spec({
   apple: nextApple,
 });
 
-const enqueue = (state, move) => validMove(move)(state)
-      ? merge(state)({ moves: state.moves.concat([move]) })
+const enqueue = (state, move) => validMove(move, state)
+      ? merge(state)({ moves: state.moves.concat(MOVES[move]) })
       : state;
 
-const Snake = { NORTH, EAST, SOUTH, WEST, initialState, enqueue, next };
+const Snake = { initialState, enqueue, next };
 export default Snake;
