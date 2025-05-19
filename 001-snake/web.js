@@ -3,13 +3,12 @@ import CONSTANTS from './constants.json' with { type: 'json' };
 
 const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, COLOURS } = CONSTANTS;
 
-const { initialState, enqueue, next } = Snake;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const FULL_CIRCLE = 2 * Math.PI;
 
 // Mutable state
-let state = initialState();
+let state = Snake.initialState();
 
 // Position helpers
 const x = (c) => Math.round((c * canvas.width) / COLS);
@@ -51,13 +50,13 @@ const draw = () => {
 };
 
 // Game loop update
-const step = (t1) => (t2) => {
+const update = (t1 = 0) => (t2) => {
   if (t2 - t1 > FRAME_RATE) {
-    state = next(state);
+    state = Snake.next(state);
     draw();
-    window.requestAnimationFrame(step(t2));
+    window.requestAnimationFrame(update(t2));
   } else {
-    window.requestAnimationFrame(step(t1));
+    window.requestAnimationFrame(update(t1));
   }
 };
 
@@ -66,9 +65,8 @@ window.addEventListener('keydown', (e) => {
   const action = KEY_MAPPINGS.find(([_key, codes]) =>
     codes.includes(e.key.toUpperCase())
   )?.[0];
-  state = enqueue(state, action);
+  state = Snake.enqueue(state, action);
 });
 
 // Main
-draw();
-window.requestAnimationFrame(step(0));
+window.requestAnimationFrame(update());

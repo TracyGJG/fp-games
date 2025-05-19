@@ -32,5 +32,6 @@
   "CELL": "97m.",
   "CRASH": "34mX",
   "SNAKE": "92m#",
+  "SPACE": " ",
   "NEW_LINE": "\r\n"
 }
