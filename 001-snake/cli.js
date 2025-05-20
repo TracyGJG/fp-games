@@ -1,18 +1,20 @@
 import readline from 'readline';
-import Snake from './snake.js';
-import Matrix from './matrix.js';
+
+import { present } from './matrix.js';
+
+import { initialState, enqueue, next } from './snake.js';
+
 import CONSTANTS from './constants.json' with { type: 'json' };
 
 const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE } = CONSTANTS;
 
-
 // Mutable state
-let State = Snake.initialState();
+let state = initialState();
 
 // Game loop update
 function update() {
-  console.log(`\x1Bc${Matrix.toString(Matrix.fromState(State))}`);
-  State = Snake.next(State);
+  console.log(present(state));
+  state = next(state);
 }
 
 // Key events
@@ -24,7 +26,7 @@ function update() {
     const action = KEY_MAPPINGS.find(([_key, codes]) =>
       codes.includes(key.name.toUpperCase())
     )?.[0];
-    State = Snake.enqueue(State, action);
+    state = enqueue(state, action);
   });
 })();
 

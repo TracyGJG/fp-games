@@ -43,7 +43,7 @@ const nextSnake = (state) =>
 
 
 // Initial state
-const initialState = () => ({
+export const initialState = () => ({
   cols: COLS,
   rows: ROWS,
   moves: INITIAL_MOVE,
@@ -51,7 +51,8 @@ const initialState = () => ({
   apple: { x: rnd(0)(COLS), y: rnd(0)(ROWS) },
 });
 
-const next = spec({
+// Update state
+export const next = spec({
   rows: prop('rows'),
   cols: prop('cols'),
   moves: nextMoves,
@@ -59,9 +60,6 @@ const next = spec({
   apple: nextApple,
 });
 
-const enqueue = (state, move) => validMove(move, state)
-      ? merge(state)({ moves: state.moves.concat(MOVES[move]) })
-      : state;
-
-const Snake = { initialState, enqueue, next };
-export default Snake;
+export const enqueue = (state, move) => validMove(move, state)
+  ? merge(state)({ moves: state.moves.concat(MOVES[move]) })
+  : state;

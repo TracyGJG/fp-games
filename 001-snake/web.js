@@ -1,4 +1,4 @@
-import Snake from './snake.js';
+import { initialState, enqueue, next } from './snake.js';
 import CONSTANTS from './constants.json' with { type: 'json' };
 
 const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, COLOURS } = CONSTANTS;
@@ -8,7 +8,7 @@ const ctx = canvas.getContext('2d');
 const FULL_CIRCLE = 2 * Math.PI;
 
 // Mutable state
-let state = Snake.initialState();
+let state = initialState();
 
 // Position helpers
 const x = (c) => Math.round((c * canvas.width) / COLS);
@@ -52,7 +52,7 @@ const draw = () => {
 // Game loop update
 const update = (t1 = 0) => (t2) => {
   if (t2 - t1 > FRAME_RATE) {
-    state = Snake.next(state);
+    state = next(state);
     draw();
     window.requestAnimationFrame(update(t2));
   } else {
@@ -65,7 +65,7 @@ window.addEventListener('keydown', (e) => {
   const action = KEY_MAPPINGS.find(([_key, codes]) =>
     codes.includes(e.key.toUpperCase())
   )?.[0];
-  state = Snake.enqueue(state, action);
+  state = enqueue(state, action);
 });
 
 // Main
