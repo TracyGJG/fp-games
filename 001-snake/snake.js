@@ -11,10 +11,10 @@ import {
 } from './base.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-
 const { COLS, ROWS, MOVES, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
 
-// Booleans
+
+// Predicates
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
 const willCrash = (state) => state.snake.find(pointEq(nextHead(state)));
 const validMove = (move, state) => move &&

@@ -13,7 +13,7 @@ let state = initialState();
 
 // Game loop update
 function update() {
-  console.log(present(state));
+  present(state);
   state = next(state);
 }
 
@@ -23,6 +23,7 @@ function update() {
   process.stdin.setRawMode(true);
   process.stdin.on('keypress', (_str, key) => {
     if (key.name === 'escape') process.exit();
+    
     const action = KEY_MAPPINGS.find(([_key, codes]) =>
       codes.includes(key.name.toUpperCase())
     )?.[0];

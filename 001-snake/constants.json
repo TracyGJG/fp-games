@@ -28,10 +28,9 @@
     "apple": "rgb(255,50,0)",
     "crash": "rgb(0,0,255)"
   },
-  "APPLE": "91mO",
-  "CELL": "97m.",
-  "CRASH": "34mX",
-  "SNAKE": "92m#",
-  "SPACE": " ",
+  "APPLE": "91m██",
+  "CELL": "97m  ",
+  "CRASH": "34m░░",
+  "SNAKE": "92m▓▓",
   "NEW_LINE": "\r\n"
 }

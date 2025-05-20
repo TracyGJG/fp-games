@@ -2,7 +2,7 @@ import { adjust, id, k, map, pipe, rep } from './base.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 
-const { NEW_LINE, APPLE, CELL, CRASH, SNAKE, SPACE } = CONSTANTS;
+const { NEW_LINE, APPLE, CELL, CRASH, SNAKE } = CONSTANTS;
 
 const chars = (_) => `\x1B[1;${_}`;
 const clear = (_) => `\x1Bc${_}`;
@@ -13,7 +13,7 @@ const _CRASH = chars(CRASH);
 const _SNAKE = chars(SNAKE);
 
 const make = ({cols, rows}) => rep(rep(_CELL)(cols))(rows);
-const _toString = (xsxs) => xsxs.map((xs) => xs.join(SPACE)).join(NEW_LINE);
+const _toString = (xsxs) => xsxs.map((xs) => xs.join('')).join(NEW_LINE);
 const _set = (val) => (pos) => adjust(pos.y)(adjust(pos.x)(k(val)));
 const addSnake = (state) => pipe(...map(_set(_SNAKE))(state.snake));
 const addApple = (state) => _set(_APPLE)(state.apple);
@@ -27,4 +27,6 @@ const fromState = (state) =>
       addCrash(state)
     )(state);
   
-export const present = (state) => clear(_toString(fromState(state)));
+export const present = (state) => {
+  console.log(clear(_toString(fromState(state))));
+};
