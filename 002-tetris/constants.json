@@ -56,12 +56,41 @@
     ["rotate", ["W", "K", "UP"]],
     ["moveLeft", ["A", "H", "LEFT"]],
     ["moveDown", ["S", "J", "DOWN"]],
-    ["moveRight", ["D", "L", "RIGHT"]],
-    ["quitApp", ["ESCAPE"]]
+    ["moveRight", ["D", "L", "RIGHT"]]
   ],
+  "COLS": 10,
+  "ROWS": 18.5,
   "FRAME_RATE": 50,
   "COLOURS": {
     "background": "#333",
     "base": "#777"
-  }
+  },
+  "BLOCK_COLOURS": [
+    { "fill": "#077", "border": "#0ff" },
+    { "fill": "#770", "border": "#ff0" },
+    { "fill": "#707", "border": "#f0f" },
+    { "fill": "#070", "border": "#0f0" },
+    { "fill": "#700", "border": "#f00" },
+    { "fill": "#007", "border": "#00f" },
+    { "fill": "#777", "border": "#fff" },
+    { "fill": "#000", "border": "#777" }
+  ],
+  "CHARS": {
+    "space": " ",
+    "block": "▓",
+    "swipe": "░",
+    "bar": "▔"
+  },
+  "BLOCKS": [
+    ["space"],
+    ["block", "cyan"],
+    ["block", "yellow"],
+    ["block", "magenta"],
+    ["block", "green"],
+    ["block", "red"],
+    ["block", "blue"],
+    ["block", "white"],
+    ["space"]
+  ],
+  "NEW_LINE": "\r\n"
 }
