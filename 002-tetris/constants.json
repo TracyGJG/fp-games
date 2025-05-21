@@ -58,9 +58,10 @@
     ["moveDown", ["S", "J", "DOWN"]],
     ["moveRight", ["D", "L", "RIGHT"]]
   ],
+  "FRAME_RATE": 50,
   "COLS": 10,
   "ROWS": 18.5,
-  "FRAME_RATE": 50,
+  "BASE_HEIGHT": 20,
   "COLOURS": {
     "background": "#333",
     "base": "#777"
