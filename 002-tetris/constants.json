@@ -80,7 +80,7 @@
     "space": " ",
     "block": "▓",
     "swipe": "░",
-    "bar": "▔"
+    "base": "▔"
   },
   "BLOCKS": [
     ["space"],
@@ -93,5 +93,6 @@
     ["block", "white"],
     ["space"]
   ],
+  "EMPTY": "",
   "NEW_LINE": "\r\n"
 }

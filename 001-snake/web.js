@@ -1,6 +1,6 @@
 import { initialState, enqueue, next } from './snake.js';
-import CONSTANTS from './constants.json' with { type: 'json' };
 
+import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, COLOURS } = CONSTANTS;
 
 const canvas = document.getElementById('canvas');
