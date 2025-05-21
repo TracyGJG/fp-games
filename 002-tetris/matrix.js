@@ -32,7 +32,7 @@ export const matrixToStr = (x) => pipe(
 export const row = (x) => (m) => rep(x)(m[0].length);
 const frame = (m) => append(row(CHARS.base.repeat(2))(m))(m);
 export const rotate = pipe(transpose, mirror);
-export const makeMatrix = (rows) => (cols) => rep(rep(0)(cols))(rows);
+export const makeMatrix = (cols, rows) => rep(rep(0)(cols))(rows);
 const _mount = (f) => (pos) => (m1) => (m2) =>
   mapi(
     (row) => (y) =>
@@ -51,15 +51,15 @@ const pick = (xs) => xs[Math.floor(Math.random() * xs.length)];
 
 const toMatrix = (s) => mount(s.player)(s.board);
 
-
+export const isFinished = (state) => state.board.every(row => /[1-7]/.test(row.join()));
 export const present = (state) => {
-  const isFinished = state.board.every(row => /[1-7]/.test(row.join()));
+  const _isFinished = isFinished(state);
   console.log(clear(pipe(
         toMatrix,
         map(map(pieceToStr)),
         frame,
         matrixToStr
       )(state)));
-  isFinished && console.log('GAME OVER');
-  return isFinished;
+  _isFinished && console.log('GAME OVER');
+  return _isFinished;
 };

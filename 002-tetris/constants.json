@@ -56,10 +56,10 @@
   },
   "CONDENCE": [10, 12, 14, 16, 18, 18, 16, 14, 12, 10],
   "WEB_KEY_MAPPINGS": [
-    ["NORTH", ["W", "K", "ARROWUP"]],
-    ["EAST", ["A", "H", "ARROWLEFT"]],
-    ["SOUTH", ["S", "J", "ARROWDOWN"]],
-    ["WEST", ["D", "L", "ARROWRIGHT"]]
+    ["rotate", ["W", "K", "ARROWUP"]],
+    ["moveLeft", ["A", "H", "ARROWLEFT"]],
+    ["moveDown", ["S", "J", "ARROWDOWN"]],
+    ["moveRight", ["D", "L", "ARROWRIGHT"]]
   ],
   "CLI_KEY_MAPPINGS": [
     ["rotate", ["W", "K", "UP"]],
@@ -69,21 +69,20 @@
   ],
   "FRAME_RATE": 50,
   "COLS": 10,
-  "ROWS": 18.5,
+  "ROWS": 22,
   "BASE_HEIGHT": 20,
   "COLOURS": {
     "background": "#333",
     "base": "#777"
   },
   "BLOCK_COLOURS": [
-    { "fill": "#077", "border": "#0ff" },
-    { "fill": "#770", "border": "#ff0" },
-    { "fill": "#707", "border": "#f0f" },
-    { "fill": "#070", "border": "#0f0" },
-    { "fill": "#700", "border": "#f00" },
-    { "fill": "#007", "border": "#00f" },
-    { "fill": "#777", "border": "#fff" },
-    { "fill": "#000", "border": "#777" }
+    { "fill": "#0bb", "border": "#0ff" },
+    { "fill": "#bb0", "border": "#ff0" },
+    { "fill": "#b0b", "border": "#f0f" },
+    { "fill": "#0b0", "border": "#0f0" },
+    { "fill": "#b00", "border": "#f00" },
+    { "fill": "#00b", "border": "#00f" },
+    { "fill": "#bbb", "border": "#fff" }
   ],
   "CHARS": {
     "space": " ",

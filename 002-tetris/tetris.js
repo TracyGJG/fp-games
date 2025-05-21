@@ -23,7 +23,7 @@ import {
 import { makeMatrix, mount, randPieces, rotate, row, sum } from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { CONDENCE, INITIAL_POSITION, MOVES } = CONSTANTS;
+const { COLS, ROWS, CONDENCE, INITIAL_POSITION, MOVES } = CONSTANTS;
 
 const movePlayer = (d) => (p) => ({
   ...p,
@@ -48,8 +48,7 @@ Tetris.moveDown = (s) => {
   let s2 = Tetris.movePlayer(movePlayer(MOVES.DOWN))(s);
   return s2.player != s.player
     ? s2
-    : {
-        ...s,
+    : { ...s,
         board: mount(s.player)(s.board),
         player: makePlayer(),
       };
@@ -57,8 +56,7 @@ Tetris.moveDown = (s) => {
 Tetris.rotate = (s) =>
   Tetris.isAnimating(s)
     ? s
-    : {
-        ...s,
+    : { ...s,
         player: find(
           (f) =>
             sum(mount(f(s.player))(s.board)) == sum(mount(s.player)(s.board))
@@ -103,8 +101,8 @@ Tetris.maybeMoveDown = ifelse(Tetris.isAnimating)(id)(
 // Initial state
 export const initialState = k({
   time: 0,
-  wait: 15,
-  board: makeMatrix(22)(10),
+  wait: 1,
+  board: makeMatrix(COLS, ROWS),
   player: makePlayer(),
 });
 

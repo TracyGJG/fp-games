@@ -13,11 +13,11 @@ let timer;
 
 // Game loop update
 function update() {
+  state = next(state);
   if (present(state)) {
     clearInterval(timer);
     process.exit();
   }
-  state = next(state);
 }
 
 // Key events
