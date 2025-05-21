@@ -9,10 +9,14 @@ const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE } = CONSTANTS;
 
 // Mutable state
 let state = initialState();
+let timer;
 
 // Game loop update
 function update() {
-  present(state);
+  if (present(state)) {
+    clearInterval(timer);
+    process.exit();
+  }
   state = next(state);
 }
 
@@ -31,4 +35,4 @@ function update() {
 })();
 
 // Main
-setInterval(update, FRAME_RATE);
+timer = setInterval(update, FRAME_RATE);

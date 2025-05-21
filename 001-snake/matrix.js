@@ -28,5 +28,8 @@ const fromState = (state) =>
     )(state);
   
 export const present = (state) => {
+  const isFinished = false;
   console.log(clear(_toString(fromState(state))));
+  isFinished && console.log('GAME OVER');
+  return isFinished;
 };

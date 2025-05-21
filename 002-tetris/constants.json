@@ -9,7 +9,15 @@
     "cyan": 36,
     "white": 37
   },
-  "Pieces": {
+  "MOVES": {
+    "LEFT": { "x": -1 },
+    "RIGHT": { "x": 1 },
+    "DOWN": { "y": 1 },
+    "LEFT2": { "x": -2 },
+    "RIGHT2": { "x": 2 }
+  },
+  "INITIAL_POSITION": { "x": 3, "y": 0 },
+  "PIECES": {
     "I": [
       [0, 0, 0, 0],
       [1, 1, 1, 1],
@@ -46,6 +54,7 @@
       [0, 0, 0]
     ]
   },
+  "CONDENCE": [10, 12, 14, 16, 18, 18, 16, 14, 12, 10],
   "WEB_KEY_MAPPINGS": [
     ["NORTH", ["W", "K", "ARROWUP"]],
     ["EAST", ["A", "H", "ARROWLEFT"]],
