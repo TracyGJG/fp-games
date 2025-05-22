@@ -28,7 +28,7 @@ import {
 } from './general.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { PIECES } = CONSTANTS;
+const { CONDENCE, PIECES } = CONSTANTS;
 
 const Color = {};
 Color.black = (s) => `\x1b[30m${s}\x1b[0m`;
@@ -160,7 +160,7 @@ State.swipe = (s) => ({
   ...s,
   board: s.board.map(
     ifelse(all(both(flip(gt)(0))(flip(lt)(10))))(
-      k([10, 12, 14, 16, 18, 18, 16, 14, 12, 10])
+      k(CONDENCE)
     )(id)
   ),
 });
@@ -195,9 +195,11 @@ const Board = {};
 Board.mount = (p) => Matrix.mount((o) => (n) => n != 0 ? n : o)(p)(p.piece);
 Board.valid = (b1) => (b2) => Matrix.sum(b1) == Matrix.sum(b2);
 
+const validMove = (move, _state) => !!move;
 
-export const present = (STATE) => {
-  const isFinished = false;
+export const isFrameFull = (state) => state.board.every(row => /[1-7]/.test(row.join()));
+export const present = (state) => {
+  const isFinished = isFrameFull(state);
   console.log(
     '\x1Bc' +
       pipe(
@@ -205,7 +207,7 @@ export const present = (STATE) => {
         map(map(Piece.toStr)),
         Matrix.frame,
         Matrix.toStr
-      )(STATE)
+      )(state)
     );
   isFinished && console.log('GAME OVER');
   return isFinished;
@@ -215,4 +217,4 @@ export const present = (STATE) => {
 export const initialState = State.make;
 export const next = State.next;
 
-export const enqueue = (state, move) => move ? State[move](state) : state;
+export const enqueue = (state, move) => validMove(state, move) ? State[move](state) : state;
