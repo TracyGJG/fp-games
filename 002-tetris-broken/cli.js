@@ -1,8 +1,8 @@
 import readline from 'readline';
 
-// import { present } from './matrix.js';
+import { present } from './matrix.js';
 
-import { initialState, enqueue, next, present } from './tetris.js';
+import { initialState, enqueue, next } from './tetris.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY } = CONSTANTS;
@@ -27,8 +27,8 @@ function update() {
   process.stdin.on('keypress', (_str, key) => {
     if (key.name === 'escape') process.exit();
 
-    const action = KEY_MAPPINGS.find(([_key, codes]) =>
-      codes.includes(key.name.toUpperCase())
+    const action = KEY_MAPPINGS.find(([_action, keys]) =>
+      keys.includes(key.name.toUpperCase())
     )?.[0];
     state = enqueue(state, action);
   });

@@ -49,7 +49,7 @@
   "COLS": 10,
   "CONDENCE": [10, 12, 14, 16, 18, 18, 16, 14, 12, 10],
   "EMPTY": "",
-  "FRAME_DELAY": 30,
+  "FRAME_DELAY": 200,
   "INITIAL_POSITION": { "x": 3, "y": 0 },
   "MOVES": {
     "LEFT": { "x": -1 },

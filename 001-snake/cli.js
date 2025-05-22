@@ -5,7 +5,7 @@ import { present } from './matrix.js';
 import { initialState, enqueue, next } from './snake.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE } = CONSTANTS;
+const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY } = CONSTANTS;
 
 // Mutable state
 let state = initialState();
@@ -35,4 +35,4 @@ function update() {
 })();
 
 // Main
-timer = setInterval(update, FRAME_RATE);
+timer = setInterval(update, FRAME_DELAY);

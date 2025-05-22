@@ -45,33 +45,7 @@ const draw = () => {
   ctx.fillRect(0, canvas.height - BASE_HEIGHT, canvas.width, BASE_HEIGHT);
 
   // blocks
-  // drawBlock(0, 0, 0);
-  // drawBlock(0, 1, 1);
-  // drawBlock(1, 0, 2);
-  // drawBlock(1, 1, 3);
-  // drawBlock(2, 2, 4);
-  // drawBlock(3, 3, 5);
-  // drawBlock(4, 4, 6);
-  // drawBlock(5, 5, 0);
-  // drawBlock(6, 6, 1);
-  // drawBlock(7, 7, 2);
-  // drawBlock(8, 8, 3);
-  // drawBlock(9, 9, 4);
-  // drawBlock(8, 10, 5);
-  // drawBlock(7, 11, 6);
-  // drawBlock(6, 12, 0);
-  // drawBlock(5, 13, 1);
-  // drawBlock(4, 14, 2);
-  // drawBlock(3, 15, 3);
-  // drawBlock(2, 16, 4);
-  // drawBlock(1, 17, 5);
-  // drawBlock(0, 18, 6);
-  // drawBlock(1, 19, 0);
-  // drawBlock(2, 20, 1);
-  // drawBlock(3, 21, 2);
-
   console.log(JSON.stringify(state.board));
-
   state.board.forEach((r, i) => {
     r.forEach((c, j) => c && drawBlock(j, i, c - 1))
   });
