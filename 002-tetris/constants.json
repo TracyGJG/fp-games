@@ -97,6 +97,7 @@
     ]
   },
   "ROWS": 22,
+  "WAIT": 15,
   "WEB_KEY_MAPPINGS": [
     ["rotate", ["W", "K", "ARROWUP"]],
     ["moveLeft", ["A", "H", "ARROWLEFT"]],
