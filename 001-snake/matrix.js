@@ -2,7 +2,7 @@ import { adjust, id, k, map, pipe, rep } from './base.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 
-const { NEW_LINE, APPLE, BACKGROUND, CRASH, SNAKE } = CONSTANTS;
+const { EMPTY, NEW_LINE, APPLE, BACKGROUND, CRASH, SNAKE } = CONSTANTS;
 
 const chars = (_) => `\x1B[1;${_}`;
 const clear = (_) => `\x1Bc${_}`;
@@ -19,7 +19,7 @@ const addApple = (state) => setValue(_APPLE)(state.apple);
 const addCrash = (state) =>
   state.snake.length ? id : map(map(k(_CRASH)));
 
-export const matrixToString = (xsxs) => xsxs.map((xs) => clear(xs.join('')).join(NEW_LINE));
+export const matrixToString = (xsxs) => clear(xsxs.map((xs) => xs.join(EMPTY)).join(NEW_LINE));
 export const matrixFromState = (state) =>
     pipe(
       make,

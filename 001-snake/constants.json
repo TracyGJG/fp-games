@@ -15,6 +15,7 @@
     "apple": "rgb(255,50,0)",
     "crash": "rgb(0,0,255)"
   },
+  "EMPTY": "",
   "FRAME_DELAY": 100,
   "INITIAL_MOVE": [{ "x": 1, "y": 0 }],
   "MOVES": {
