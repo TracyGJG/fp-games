@@ -1,7 +1,7 @@
 import { initialState, enqueue, next } from './snake.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_RATE, COLOURS } = CONSTANTS;
+const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY, COLOURS } = CONSTANTS;
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -13,10 +13,10 @@ let state = initialState();
 // Position helpers
 const x = (c) => Math.round((c * canvas.width) / COLS);
 const y = (r) => Math.round((r * canvas.height) / ROWS);
-const X_OFFSET = x(0.5);
-const Y_OFFSET = y(0.5);
 const CELL_WIDTH = x(1);
 const CELL_HEIGHT = y(1);
+const X_OFFSET = x(0.5);
+const Y_OFFSET = y(0.5);
 
 // Game loop draw
 const draw = () => {
@@ -51,7 +51,7 @@ const draw = () => {
 
 // Game loop update
 const update = (t1 = 0) => (t2) => {
-  if (t2 - t1 > FRAME_RATE) {
+  if (t2 - t1 > FRAME_DELAY) {
     state = next(state);
     draw();
     window.requestAnimationFrame(update(t2));

@@ -1,14 +1,14 @@
 {
-  "APPLE": "91m██",
+  "APPLE": "91m▓▓",
+  "BACKGROUND": "32m░░",
   "COLS": 40,
-  "CELL": "97m  ",
   "CLI_KEY_MAPPINGS": [
     ["NORTH", ["W", "K", "UP"]],
     ["EAST", ["A", "H", "LEFT"]],
     ["SOUTH", ["S", "J", "DOWN"]],
     ["WEST", ["D", "L", "RIGHT"]]
   ],
-  "CRASH": "34m░░",
+  "CRASH": "34m██",
   "COLOURS": {
     "background": "rgb(35,35,35)",
     "snake": "rgb(0,255,50)",

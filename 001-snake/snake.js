@@ -1,4 +1,5 @@
 import {
+  append,
   dropFirst,
   dropLast,
   merge,
@@ -17,8 +18,8 @@ const { COLS, ROWS, MOVES, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
 // Predicates
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
 const willCrash = (state) => state.snake.find(pointEq(nextHead(state)));
-const validMove = (move, state) => move &&
-  (state.moves[0].x + move.x != 0 || state.moves[0].y + move.y != 0);
+const validMove = (move) => (state) => move &&
+  (state.moves[0].x + MOVES[move].x != 0 || state.moves[0].y + MOVES[move].y != 0);
 
 // Next values based on state
 const nextMoves = (state) =>
@@ -60,6 +61,6 @@ export const next = spec({
   apple: nextApple,
 });
 
-export const enqueue = (state, move) => validMove(move, state)
-  ? merge(state)({ moves: state.moves.concat(MOVES[move]) })
+export const enqueue = (state, move) => validMove(move)(state)
+  ? merge(state)({ moves: append(state.moves)(MOVES[move]) })
   : state;

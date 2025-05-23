@@ -1,6 +1,6 @@
 import readline from 'readline';
 
-import { present } from './matrix.js';
+import { matrixFromState, matrixToString } from './matrix.js';
 
 import { initialState, enqueue, next } from './snake.js';
 
@@ -10,6 +10,14 @@ const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY } = CONSTANTS;
 // Mutable state
 let state = initialState();
 let timer;
+
+// Game loop present
+const present = (state) => {
+  const isFinished = false;
+  console.log(matrixToString(matrixFromState(state)));
+  isFinished && console.log('GAME OVER');
+  return isFinished;
+};
 
 // Game loop update
 function update() {
