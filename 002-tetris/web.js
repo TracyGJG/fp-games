@@ -1,3 +1,7 @@
+// import { isFinished } from './matrix.js';
+
+// import { initialState, enqueue, next } from './tetris.js';
+
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, ROWS,
   WEB_KEY_MAPPINGS: KEY_MAPPINGS, 
@@ -8,8 +12,8 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const CELL_INSET = 2;
 
-
-const state = {
+// Mutable state
+let state = {
   board: [
     [ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -71,5 +75,33 @@ const draw = () => {
     r.forEach((c, j) => c && drawBlock(j, i, c - 1))
   });
 };
+
+/*
+// Game loop update
+const update = (t1 = 0) => (t2) => {
+  if (isFinished(state)) {
+    console.log('GAME OVER');
+  } else {
+    if (t2 - t1 > FRAME_DELAY) {
+      state = next(state);
+      draw();
+      window.requestAnimationFrame(update(t2));
+    } else {
+      window.requestAnimationFrame(update(t1));
+    }
+  }
+};
+
+// Key events
+window.addEventListener('keydown', (e) => {
+  const action = KEY_MAPPINGS.find(([_key, codes]) =>
+    codes.includes(e.key.toUpperCase())
+  )?.[0];
+  state = enqueue(state, action);
+});
+
+// Main
+window.requestAnimationFrame(update());
+*/
 
 draw();

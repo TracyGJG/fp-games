@@ -54,7 +54,7 @@ export {
   not,
   pipe,
   prop,
-  transpose,
   reduce,
   rep,
+  transpose,
 };
