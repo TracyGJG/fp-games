@@ -1,6 +1,6 @@
 import readline from 'readline';
 
-import { present } from './matrix.js';
+import Matrix from './matrix.js';
 
 import { initialState, enqueue, next } from './snake.js';
 
@@ -14,7 +14,7 @@ let timer;
 // Game loop update
 function update() {
   state = next(state);
-  if (present(state)) {
+  if (Matrix.present(state)) {
     clearInterval(timer);
     process.exit();
   }

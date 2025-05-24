@@ -28,6 +28,6 @@ const matrixFromState = (state) =>
       addCrash(state)
     )(state);
 
-export const present = (state) => {
+export default (state) => {
   console.log(clear(matrixToString(matrixFromState(state))));
 };

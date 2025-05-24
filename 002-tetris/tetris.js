@@ -20,94 +20,92 @@ import {
   rep,
 } from './general.js';
 
-import { makeMatrix, mountBoard, 
-  makePlayer, movePlayer, rotatePlayer, 
-  matrixRow, combineMatricies } from './matrix.js';
+import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { CONDENCE } = CONSTANTS;
+const { COLS, ROWS, WAIT, CONDENCE } = CONSTANTS;
 
 const Tetris = {};
-Tetris.make = k({
-  time: 0,
-  wait: 15,
-  board: makeMatrix(22)(10),
-  player: makePlayer(),
-});
 Tetris.movePlayer = (f) => (s) => {
-  if (Tetris.isAnimating(s)) return s;
-  let pre = mountBoard(s.player)(s.board);
-  let post = mountBoard(f(s.player))(s.board);
-  let valid = combineMatricies(pre) === combineMatricies(post);
+  if (isAnimating(s)) return s;
+  let pre = Matrix.mountBoard(s.player)(s.board);
+  let post = Matrix.mountBoard(f(s.player))(s.board);
+  let valid = Matrix.combine(pre) === Matrix.combine(post);
   return { ...s, player: valid ? f(s.player) : s.player };
 };
-Tetris.moveLeft = Tetris.movePlayer(movePlayer({ x: -1 }));
-Tetris.moveRight = Tetris.movePlayer(movePlayer({ x: 1 }));
+
+Tetris.moveLeft = Tetris.movePlayer(Matrix.movePlayer({ x: -1 }));
+Tetris.moveRight = Tetris.movePlayer(Matrix.movePlayer({ x: 1 }));
 Tetris.moveDown = (s) => {
-  if (Tetris.isAnimating(s)) return s;
-  let s2 = Tetris.movePlayer(movePlayer({ y: 1 }))(s);
+  if (isAnimating(s)) return s;
+  let s2 = Tetris.movePlayer(Matrix.movePlayer({ y: 1 }))(s);
   return s2.player === s.player
     ? {
         ...s,
-        board: mountBoard(s.player)(s.board),
-        player: makePlayer(),
+        board: Matrix.mountBoard(s.player)(s.board),
+        player: Matrix.makePlayer(),
       }
     : s2;
 };
 Tetris.rotate = (s) =>
-  Tetris.isAnimating(s)
+  isAnimating(s)
     ? s
     : {
         ...s,
         player: find(
           (f) =>
-            combineMatricies(mountBoard(f(s.player))(s.board)) ==
-            combineMatricies(mountBoard(s.player)(s.board))
+            Matrix.combine(Matrix.mountBoard(f(s.player))(s.board)) ==
+            Matrix.combine(Matrix.mountBoard(s.player)(s.board))
         )([
-          rotatePlayer,
-          pipe(movePlayer({ x: 1 }), rotatePlayer),
-          pipe(movePlayer({ x: -1 }), rotatePlayer),
-          pipe(movePlayer({ x: 2 }), rotatePlayer),
-          pipe(movePlayer({ x: -2 }), rotatePlayer),
+          Matrix.rotatePlayer,
+          pipe(Matrix.movePlayer({ x: 1 }), Matrix.rotatePlayer),
+          pipe(Matrix.movePlayer({ x: -1 }), Matrix.rotatePlayer),
+          pipe(Matrix.movePlayer({ x: 2 }), Matrix.rotatePlayer),
+          pipe(Matrix.movePlayer({ x: -2 }), Matrix.rotatePlayer),
           id,
         ])(s.player),
       };
-Tetris.swipe = (s) => ({
+
+const swipe = (s) => ({
   ...s,
   board: s.board.map(
     ifelse(all(both(flip(gt)(0))(flip(lt)(10))))(k(CONDENCE))(id)
   ),
 });
-Tetris.clear = (s) => {
+ const clear = (s) => {
   let remains = filter(any(not(eq(-1))))(s.board);
   let count = s.board.length - remains.length;
-  let newlines = rep(matrixRow(0)(remains))(count);
+  let newlines = rep(Matrix.row(0)(remains))(count);
   let board = concat(newlines)(remains);
   return { ...s, board };
 };
-Tetris.isAnimating = pipe(prop('board'), any(any(flip(gt)(9))));
-Tetris.animate = (s) => ({
+const isAnimating = pipe(prop('board'), any(any(flip(gt)(9))));
+const animate = (s) => ({
   ...s,
   board: map(
     map(pipe(ifelse(flip(gt)(7))(add(1))(id), ifelse(flip(gt)(30))(k(-1))(id)))
   )(s.board),
 });
-Tetris.timeToMove = (s) => !(s.time % s.wait);
-Tetris.nextTime = (s) => ({ ...s, time: s.time + 1 });
-Tetris.maybeMoveDown = ifelse(Tetris.isAnimating)(id)(
-  ifelse(Tetris.timeToMove)(Tetris.moveDown)(id)
-);
-Tetris.next = pipe(
-  Tetris.animate,
-  Tetris.nextTime,
-  Tetris.maybeMoveDown,
-  Tetris.clear,
-  Tetris.swipe
+const timeToMove = (s) => !(s.time % s.wait);
+const nextTime = (s) => ({ ...s, time: s.time + 1 });
+const maybeMoveDown = ifelse(isAnimating)(id)(
+  ifelse(timeToMove)(Tetris.moveDown)(id)
 );
 
-export const initialState = Tetris.make;
+export const initialState = k({
+  time: 0,
+  wait: WAIT,
+  board: Matrix.makeGame(ROWS)(COLS),
+  player: Matrix.makePlayer(),
+});
 
-export const next = Tetris.next;
+export const next = pipe(
+  animate,
+  nextTime,
+  maybeMoveDown,
+  clear,
+  swipe
+);
 
 export const enqueue = (state, action) =>
   action ? Tetris[action](state) : state;
