@@ -7,7 +7,8 @@
     { "fill": "#0b0", "border": "#0f0" },
     { "fill": "#b00", "border": "#f00" },
     { "fill": "#00b", "border": "#00f" },
-    { "fill": "#bbb", "border": "#fff" }
+    { "fill": "#bbb", "border": "#fff" },
+    { "fill": "#000", "border": "#777" }
   ],
   "BLOCKS": [
     ["space"],
@@ -44,7 +45,7 @@
   ],
   "COLOURS": {
     "background": "#333",
-    "base": "#777"
+    "base": "#fff"
   },
   "COLS": 10,
   "CONDENCE": [10, 12, 14, 16, 18, 18, 16, 14, 12, 10],

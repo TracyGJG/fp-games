@@ -1,4 +1,4 @@
-const adjust = (n) => (f) => (xs) => mapi((x) => (i) => i == n ? f(x) : x)(xs);
+const adjust = (n) => (f) => (xs) => mapi((x) => (i) => i === n ? f(x) : x)(xs);
 const append =
   (a) =>
   (...e) =>
@@ -16,7 +16,7 @@ const pipe =
   (...fns) =>
   (x) =>
     [...fns].reduce((acc, f) => f(acc), x);
-const pointEq = (p1) => (p2) => p1.x == p2.x && p1.y == p2.y;
+const pointEq = (p1) => (p2) => p1.x === p2.x && p1.y === p2.y;
 const prop = (k) => (o) => o[k];
 const range = (n) => (m) => [...Array(m - n)].map((_, i) => n + i);
 const rep = (c) => (n) => map(k(c))(range(0)(n));

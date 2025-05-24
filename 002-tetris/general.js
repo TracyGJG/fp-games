@@ -6,7 +6,7 @@ const any = (f) => pipe(map(f), reduce(or)(false));
 const append = (x) => (xs) => [...xs, x];
 const both = (f) => (g) => (x) => f(x) && g(x);
 const concat = (x1) => (x2) => x1.concat(x2);
-const eq = (x) => (y) => x == y;
+const eq = (x) => (y) => x === y;
 const filter = (f) => (xs) => xs.filter(f);
 const find = (f) => (xs) => xs.find(f);
 const flip = (f) => (x) => (y) => f(y)(x);
