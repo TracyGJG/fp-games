@@ -1,8 +1,8 @@
 import readline from 'readline';
 
-// import { present } from './matrix.js';
+import { present } from './matrix.js';
 
-import { initialState, enqueue, next, present } from './tetris.js';
+import { initialState, enqueue, next } from './tetris.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY } = CONSTANTS;
@@ -14,7 +14,7 @@ let timer;
 // Game loop update
 function update() {
   state = next(state);
-  if (present(state)) {
+  if (!present(state)) {
     clearInterval(timer);
     process.exit();
   }
