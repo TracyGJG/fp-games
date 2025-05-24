@@ -46,7 +46,7 @@ export const matrixRow = (x) => (m) => rep(x)(m[0].length);
 export const matrixFrame = (m) => append(matrixRow(CHARS.base.repeat(2))(m))(m);
 const rotateMatrix = pipe(transpose, mirror);
 export const makeMatrix = (rows) => (cols) => rep(rep(0)(cols))(rows);
-export const mountMatrix = (f) => (pos) => (m1) => (m2) =>
+const mountMatrix = (f) => (pos) => (m1) => (m2) =>
   mapi(
     (row) => (y) =>
       mapi(
@@ -67,3 +67,5 @@ export const movePlayer = (d) => (p) => ({
 });
 export const makePlayer = () => ({ x: 3, y: 0, piece: randomPiece() });
 export const rotatePlayer = (p) => ({ ...p, piece: rotateMatrix(p.piece) });
+
+export const mountBoard = (p) => mountMatrix((o) => (n) => n || o)(p)(p.piece);

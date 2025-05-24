@@ -23,7 +23,7 @@ import {
 } from './general.js';
 
 import { present, pieceToString, 
-  makeMatrix, mountMatrix, 
+  makeMatrix, mountBoard, 
   makePlayer, movePlayer, rotatePlayer, 
   matrixFrame, matrixToString, 
   matrixRow, combineMatricies } from './matrix.js';
@@ -56,13 +56,12 @@ Tetris.moveRight = Tetris.movePlayer(movePlayer({ x: 1 }));
 Tetris.moveDown = (s) => {
   if (Tetris.isAnimating(s)) return s;
   let s2 = Tetris.movePlayer(movePlayer({ y: 1 }))(s);
-  return s2.player != s.player
-    ? s2
-    : {
-        ...s,
-        board: mountBoard(s.player)(s.board),
-        player: makePlayer(),
-      };
+  return s2.player === s.player
+    ? {
+      ...s,
+      board: mountBoard(s.player)(s.board),
+      player: makePlayer(),
+    } : s2;
 };
 Tetris.rotate = (s) =>
   Tetris.isAnimating(s)
@@ -117,7 +116,6 @@ Tetris.next = pipe(
   Tetris.swipe
 );
 
-const mountBoard = (p) => mountMatrix((o) => (n) => n != 0 ? n : o)(p)(p.piece);
 
 const matrixData = pipe(
   Tetris.toMatrix,
