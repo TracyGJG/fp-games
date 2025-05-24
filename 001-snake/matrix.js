@@ -19,11 +19,15 @@ const addApple = (state) => setValue(_APPLE)(state.apple);
 const addCrash = (state) =>
   state.snake.length ? id : map(map(k(_CRASH)));
 
-export const matrixToString = (xsxs) => clear(xsxs.map((xs) => xs.join(EMPTY)).join(NEW_LINE));
-export const matrixFromState = (state) =>
+const matrixToString = (xsxs) => xsxs.map((xs) => xs.join(EMPTY)).join(NEW_LINE);
+const matrixFromState = (state) =>
     pipe(
       make,
       addSnake(state),
       addApple(state),
       addCrash(state)
     )(state);
+
+export const present = (state) => {
+  console.log(clear(matrixToString(matrixFromState(state))));
+};
