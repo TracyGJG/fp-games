@@ -73,6 +73,8 @@ const present = (state) => {
   const _isFinished = frameIsFull(state);
   if (!frameIsFull(state)) {
     console.log(clear(rendering));
+    // console.log(clear(''));
+    // console.table(state.board);
     _isFinished && console.log(`GAME OVER${NEW_LINE}`);
   }
   return _isFinished;
@@ -81,11 +83,11 @@ const present = (state) => {
 export default {
     combine,
     frameIsFull,
-    row,
     makeGame,
-    movePlayer,
     makePlayer,
-    rotatePlayer,
     mountBoard,
+    movePlayer,
     present,
+    rotatePlayer,
+    row,
 };
