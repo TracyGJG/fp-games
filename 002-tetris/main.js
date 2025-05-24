@@ -28,6 +28,27 @@ import {
   reduce,
 } from './general.js';
 
+import { initialState, enqueue, next } from './tetris.js';
+
+import CONSTANTS from './constants.json' with { type: 'json' };
+const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY, PIECES } = CONSTANTS;
+
+
+const clear = (_) => `\x1Bc${_}`;
+
+// const applyColour = (colCode) => (s) => colCode ? `\x1b[${colCode}m${s}\x1b[0m` : s;
+// const Color = Object.entries(CHAR_COLOURS).reduce((cols, [col, code]) => ({...cols, 
+//   [col]: applyColour(code)
+// }), {});
+
+// const chars = (type, colour) => colour ? Color[colour](CHARS[type].repeat(2)) : CHARS[type].repeat(2);
+// const pieceToStr = (n) => n > 7 ? chars('swipe') : chars(...BLOCKS[(9 + n)  % 9]);
+
+// const pick = (xs) => xs[Math.floor(Math.random() * xs.length)];
+// export const randPieces = () => pick(Object.values(PIECES));
+
+
+
 const Color = {};
 Color.black = (s) => `\x1b[30m${s.repeat(2)}\x1b[0m`;
 Color.red = (s) => `\x1b[31m${s.repeat(2)}\x1b[0m`;
@@ -38,46 +59,8 @@ Color.magenta = (s) => `\x1b[35m${s.repeat(2)}\x1b[0m`;
 Color.cyan = (s) => `\x1b[36m${s.repeat(2)}\x1b[0m`;
 Color.white = (s) => `\x1b[37m${s.repeat(2)}\x1b[0m`;
 
-const Pieces = {
-  I: [
-    [0, 0, 0, 0],
-    [1, 1, 1, 1],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ],
-  O: [
-    [2, 2],
-    [2, 2],
-  ],
-  T: [
-    [0, 3, 0],
-    [3, 3, 3],
-    [0, 0, 0],
-  ],
-  S: [
-    [0, 4, 4],
-    [4, 4, 0],
-    [0, 0, 0],
-  ],
-  Z: [
-    [0, 0, 0],
-    [5, 5, 0],
-    [0, 5, 5],
-  ],
-  J: [
-    [0, 0, 0],
-    [6, 6, 6],
-    [0, 0, 6],
-  ],
-  L: [
-    [0, 0, 7],
-    [7, 7, 7],
-    [0, 0, 0],
-  ],
-};
-
 const Piece = {};
-Piece.rand = () => Random.pick(Object.values(Pieces));
+Piece.rand = () => Random.pick(Object.values(PIECES));
 Piece.toStr = (n) => {
   switch (n) {
     case 0:
@@ -105,10 +88,10 @@ Piece.toStr = (n) => {
       return Color.white('▓');
       break;
     case -1:
-      return ' ';
+      return '  ';
       break;
     default:
-      return '░';
+      return '░░';
       break;
   }
 };
@@ -143,29 +126,29 @@ Player.move = (d) => (p) => ({
   x: p.x + (d.x || 0),
   y: p.y + (d.y || 0),
 });
-(Player.make = () => ({ x: 3, y: 0, piece: Piece.rand() })),
-  (Player.rotate = (p) => ({ ...p, piece: Matrix.rotate(p.piece) }));
+Player.make = () => ({ x: 3, y: 0, piece: Piece.rand() });
+Player.rotate = (p) => ({ ...p, piece: Matrix.rotate(p.piece) });
 
-const State = {};
-State.toMatrix = (s) => Board.mount(s.player)(s.board);
-State.make = k({
+const Tetris = {};
+Tetris.toMatrix = (s) => Board.mount(s.player)(s.board);
+Tetris.make = k({
   time: 0,
   wait: 15,
   board: Matrix.make(22)(10),
   player: Player.make(),
 });
-State.movePlayer = (f) => (s) => {
-  if (State.isAnimating(s)) return s;
+Tetris.movePlayer = (f) => (s) => {
+  if (Tetris.isAnimating(s)) return s;
   let pre = Board.mount(s.player)(s.board);
   let post = Board.mount(f(s.player))(s.board);
   let valid = Matrix.sum(pre) == Matrix.sum(post);
   return { ...s, player: valid ? f(s.player) : s.player };
 };
-State.moveLeft = State.movePlayer(Player.move({ x: -1 }));
-State.moveRight = State.movePlayer(Player.move({ x: 1 }));
-State.moveDown = (s) => {
-  if (State.isAnimating(s)) return s;
-  let s2 = State.movePlayer(Player.move({ y: 1 }))(s);
+Tetris.moveLeft = Tetris.movePlayer(Player.move({ x: -1 }));
+Tetris.moveRight = Tetris.movePlayer(Player.move({ x: 1 }));
+Tetris.moveDown = (s) => {
+  if (Tetris.isAnimating(s)) return s;
+  let s2 = Tetris.movePlayer(Player.move({ y: 1 }))(s);
   return s2.player != s.player
     ? s2
     : {
@@ -174,8 +157,8 @@ State.moveDown = (s) => {
         player: Player.make(),
       };
 };
-State.rotate = (s) =>
-  State.isAnimating(s)
+Tetris.rotate = (s) =>
+  Tetris.isAnimating(s)
     ? s
     : {
         ...s,
@@ -192,7 +175,7 @@ State.rotate = (s) =>
           id,
         ])(s.player),
       };
-State.swipe = (s) => ({
+Tetris.swipe = (s) => ({
   ...s,
   board: s.board.map(
     ifelse(all(both(flip(gt)(0))(flip(lt)(10))))(
@@ -200,72 +183,77 @@ State.swipe = (s) => ({
     )(id)
   ),
 });
-State.clear = (s) => {
+Tetris.clear = (s) => {
   let remains = filter(any(not(eq(-1))))(s.board);
   let count = s.board.length - remains.length;
   let newlines = rep(Matrix.row(0)(remains))(count);
   let board = concat(newlines)(remains);
   return { ...s, board };
 };
-State.isAnimating = pipe(prop('board'), any(any(flip(gt)(9))));
-State.animate = (s) => ({
+Tetris.isAnimating = pipe(prop('board'), any(any(flip(gt)(9))));
+Tetris.animate = (s) => ({
   ...s,
   board: map(
     map(pipe(ifelse(flip(gt)(7))(add(1))(id), ifelse(flip(gt)(30))(k(-1))(id)))
   )(s.board),
 });
-State.timeToMove = (s) => s.time % s.wait == 0;
-State.nextTime = (s) => ({ ...s, time: s.time + 1 });
-State.maybeMoveDown = ifelse(State.isAnimating)(id)(
-  ifelse(State.timeToMove)(State.moveDown)(id)
+Tetris.timeToMove = (s) => s.time % s.wait == 0;
+Tetris.nextTime = (s) => ({ ...s, time: s.time + 1 });
+Tetris.maybeMoveDown = ifelse(Tetris.isAnimating)(id)(
+  ifelse(Tetris.timeToMove)(Tetris.moveDown)(id)
 );
-State.next = pipe(
-  State.animate,
-  State.nextTime,
-  State.maybeMoveDown,
-  State.clear,
-  State.swipe
+Tetris.next = pipe(
+  Tetris.animate,
+  Tetris.nextTime,
+  Tetris.maybeMoveDown,
+  Tetris.clear,
+  Tetris.swipe
 );
 
 const Board = {};
 Board.mount = (p) => Matrix.mount((o) => (n) => n != 0 ? n : o)(p)(p.piece);
 Board.valid = (b1) => (b2) => Matrix.sum(b1) == Matrix.sum(b2);
 
-// Key events
-readline.emitKeypressEvents(process.stdin);
-process.stdin.setRawMode(true);
-process.stdin.on('keypress', (str, key) => {
-  if (key.name === 'escape') process.exit();
-  switch (key.name.toUpperCase()) {
-    case 'LEFT':
-      STATE = State.moveLeft(STATE);
-      break;
-    case 'RIGHT':
-      STATE = State.moveRight(STATE);
-      break;
-    case 'DOWN':
-      STATE = State.moveDown(STATE);
-      break;
-    case 'UP':
-      STATE = State.rotate(STATE);
-      break;
-  }
-});
 
-// Game loop
-let STATE = State.make();
-const step = () => (STATE = State.next(STATE));
-const show = () =>
-  console.log(
-    '\x1Bc' +
+
+
+// Mutable state
+let state = initialState(Tetris);
+let timer;
+
+// Game loop update
+function update() {
+  state = next(state);
+
+  console.log(clear(
       pipe(
-        State.toMatrix,
+        Tetris.toMatrix,
         map(map(Piece.toStr)),
         Matrix.frame,
         Matrix.toStr
-      )(STATE)
+      )(state)
+    )
   );
-setInterval(() => {
-  step();
-  show();
-}, 30);
+
+  // if (!present(state)) {
+  //   clearInterval(timer);
+  //   process.exit();
+  // }
+}
+
+// Key events
+(() => {
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+  process.stdin.on('keypress', (str, key) => {
+    if (key.name === 'escape') process.exit();
+
+    const action = KEY_MAPPINGS.find(([_key, codes]) =>
+      codes.includes(key.name.toUpperCase())
+    )?.[0];
+    state = enqueue(state, action);
+  });
+})();
+
+// Main
+timer = setInterval(update, FRAME_DELAY);
