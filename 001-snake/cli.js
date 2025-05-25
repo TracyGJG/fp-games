@@ -5,7 +5,7 @@ import Matrix from './matrix.js';
 import { initialState, enqueue, next } from './snake.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY } = CONSTANTS;
+const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, ESCAPE, FRAME_DELAY } = CONSTANTS;
 
 // Mutable state
 let state = initialState();
@@ -25,7 +25,7 @@ function update() {
   readline.emitKeypressEvents(process.stdin);
   process.stdin.setRawMode(true);
   process.stdin.on('keypress', (_str, key) => {
-    if (key.name === 'escape') {
+    if (key.name === ESCAPE) {
       clearInterval(timer);
       process.exit();
     }
