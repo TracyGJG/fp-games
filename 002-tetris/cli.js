@@ -29,7 +29,7 @@ function update() {
     if (key.name === ESCAPE) process.exit();
 
     const action = KEY_MAPPINGS.find(([_key, codes]) =>
-      codes.includes(key.name.toUpperCase())
+      codes.includes(key.name?.toUpperCase())
     )?.[0];
     state = enqueue(state, action);
   });

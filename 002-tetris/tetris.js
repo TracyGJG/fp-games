@@ -25,47 +25,46 @@ import Matrix from './matrix.js';
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, ROWS, MOVES, WAIT, CONDENCE } = CONSTANTS;
 
-const Tetris = {};
-Tetris.movePlayer = (f) => (s) => {
+const movePlayer = (f) => (s) => {
   if (isAnimating(s)) return s;
   let pre = Matrix.mountBoard(s.player)(s.board);
   let post = Matrix.mountBoard(f(s.player))(s.board);
   let valid = Matrix.combine(pre) === Matrix.combine(post);
   return { ...s, player: valid ? f(s.player) : s.player };
 };
-
-Tetris.moveLeft = Tetris.movePlayer(Matrix.movePlayer(MOVES.LEFT));
-Tetris.moveRight = Tetris.movePlayer(Matrix.movePlayer(MOVES.RIGHT));
-Tetris.moveDown = (s) => {
-  if (isAnimating(s)) return s;
-  let s2 = Tetris.movePlayer(Matrix.movePlayer(MOVES.DOWN))(s);
-  return s2.player === s.player
-    ? {
-        ...s,
-        board: Matrix.mountBoard(s.player)(s.board),
-        player: Matrix.makePlayer(),
-      }
-    : s2;
+const Moves = {
+  moveLeft: movePlayer(Matrix.movePlayer(MOVES.LEFT)),
+  moveRight: movePlayer(Matrix.movePlayer(MOVES.RIGHT)),
+  moveDown(s) {
+    if (isAnimating(s)) return s;
+    let s2 = movePlayer(Matrix.movePlayer(MOVES.DOWN))(s);
+    return s2.player === s.player
+      ? {
+          ...s,
+          board: Matrix.mountBoard(s.player)(s.board),
+          player: Matrix.makePlayer(),
+        }
+      : s2;
+  },
+  rotate(s) {
+    if (isAnimating(s)) return s;
+    return {
+      ...s,
+      player: find(
+        (f) =>
+          Matrix.combine(Matrix.mountBoard(f(s.player))(s.board)) ==
+          Matrix.combine(Matrix.mountBoard(s.player)(s.board))
+      )([
+        Matrix.rotatePlayer,
+        pipe(Matrix.movePlayer(MOVES.RIGHT), Matrix.rotatePlayer),
+        pipe(Matrix.movePlayer(MOVES.LEFT), Matrix.rotatePlayer),
+        pipe(Matrix.movePlayer(MOVES.RIGHT2), Matrix.rotatePlayer),
+        pipe(Matrix.movePlayer(MOVES.LEFT2), Matrix.rotatePlayer),
+        id,
+      ])(s.player),
+    };
+  }
 };
-Tetris.rotate = (s) =>
-  isAnimating(s)
-    ? s
-    : {
-        ...s,
-        player: find(
-          (f) =>
-            Matrix.combine(Matrix.mountBoard(f(s.player))(s.board)) ==
-            Matrix.combine(Matrix.mountBoard(s.player)(s.board))
-        )([
-          Matrix.rotatePlayer,
-          pipe(Matrix.movePlayer(MOVES.RIGHT), Matrix.rotatePlayer),
-          pipe(Matrix.movePlayer(MOVES.LEFT), Matrix.rotatePlayer),
-          pipe(Matrix.movePlayer(MOVES.RIGHT2), Matrix.rotatePlayer),
-          pipe(Matrix.movePlayer(MOVES.LEFT2), Matrix.rotatePlayer),
-          id,
-        ])(s.player),
-      };
-
 const swipe = (s) => ({
   ...s,
   board: s.board.map(
@@ -83,13 +82,15 @@ const isAnimating = pipe(prop('board'), any(any(flip(gt)(9))));
 const animate = (s) => ({
   ...s,
   board: map(
-    map(pipe(ifelse(flip(gt)(7))(add(1))(id), ifelse(flip(gt)(30))(k(-1))(id)))
+    map(
+      pipe(ifelse(flip(gt)(7))(add(1))(id), ifelse(flip(gt)(30))(k(-1))(id))
+    )
   )(s.board),
 });
 const timeToMove = (s) => !(s.time % s.wait);
 const nextTime = (s) => ({ ...s, time: s.time + 1 });
 const maybeMoveDown = ifelse(isAnimating)(id)(
-  ifelse(timeToMove)(Tetris.moveDown)(id)
+  ifelse(timeToMove)(Moves.moveDown)(id)
 );
 
 export const initialState = k({
@@ -108,4 +109,4 @@ export const next = pipe(
 );
 
 export const enqueue = (state, action) =>
-  action ? Tetris[action](state) : state;
+  action ? Moves[action](state) : state;
