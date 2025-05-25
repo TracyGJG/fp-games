@@ -17,7 +17,6 @@
   },
   "EMPTY": "",
   "FRAME_DELAY": 100,
-  "INITIAL_MOVE": [{ "x": 1, "y": 0 }],
   "MOVES": {
     "NORTH": { "x": 0, "y": -1 },
     "EAST": { "x": -1, "y": 0 },

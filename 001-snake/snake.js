@@ -12,8 +12,7 @@ import {
 } from './base.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, MOVES, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
-
+const { COLS, ROWS, MOVES, NON_SNAKE } = CONSTANTS;
 
 // Predicates
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
@@ -41,13 +40,16 @@ const nextSnake = (state) =>
     : [nextHead(state)].concat(
         willEat(state) ? state.snake : dropLast(state.snake)
       );
-
+const initialMove = () => {
+  const moves = Object.keys(MOVES);
+  return [MOVES[moves[Math.floor(Math.random() * moves.length)]]];
+};
 
 // Initial state
 export const initialState = () => ({
   cols: COLS,
   rows: ROWS,
-  moves: INITIAL_MOVE,
+  moves: initialMove(),
   snake: NON_SNAKE,
   apple: { x: rnd(0)(COLS), y: rnd(0)(ROWS) },
 });

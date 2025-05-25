@@ -23,7 +23,7 @@ import {
 import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, WAIT, CONDENCE } = CONSTANTS;
+const { COLS, ROWS, MOVES, WAIT, CONDENCE } = CONSTANTS;
 
 const Tetris = {};
 Tetris.movePlayer = (f) => (s) => {
@@ -34,11 +34,11 @@ Tetris.movePlayer = (f) => (s) => {
   return { ...s, player: valid ? f(s.player) : s.player };
 };
 
-Tetris.moveLeft = Tetris.movePlayer(Matrix.movePlayer({ x: -1 }));
-Tetris.moveRight = Tetris.movePlayer(Matrix.movePlayer({ x: 1 }));
+Tetris.moveLeft = Tetris.movePlayer(Matrix.movePlayer(MOVES.LEFT));
+Tetris.moveRight = Tetris.movePlayer(Matrix.movePlayer(MOVES.RIGHT));
 Tetris.moveDown = (s) => {
   if (isAnimating(s)) return s;
-  let s2 = Tetris.movePlayer(Matrix.movePlayer({ y: 1 }))(s);
+  let s2 = Tetris.movePlayer(Matrix.movePlayer(MOVES.DOWN))(s);
   return s2.player === s.player
     ? {
         ...s,
@@ -58,10 +58,10 @@ Tetris.rotate = (s) =>
             Matrix.combine(Matrix.mountBoard(s.player)(s.board))
         )([
           Matrix.rotatePlayer,
-          pipe(Matrix.movePlayer({ x: 1 }), Matrix.rotatePlayer),
-          pipe(Matrix.movePlayer({ x: -1 }), Matrix.rotatePlayer),
-          pipe(Matrix.movePlayer({ x: 2 }), Matrix.rotatePlayer),
-          pipe(Matrix.movePlayer({ x: -2 }), Matrix.rotatePlayer),
+          pipe(Matrix.movePlayer(MOVES.RIGHT), Matrix.rotatePlayer),
+          pipe(Matrix.movePlayer(MOVES.LEFT), Matrix.rotatePlayer),
+          pipe(Matrix.movePlayer(MOVES.RIGHT2), Matrix.rotatePlayer),
+          pipe(Matrix.movePlayer(MOVES.LEFT2), Matrix.rotatePlayer),
           id,
         ])(s.player),
       };

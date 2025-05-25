@@ -26,7 +26,7 @@ const pipe =
   (x) =>
     [...fs].reduce((acc, f) => f(acc), x);
 const prop = (p) => (o) => o[p];
-const transpose = (xsxs) => xsxs[0].map((col, i) => xsxs.map((row) => row[i]));
+const transpose = (xsxs) => xsxs[0].map((_, i) => xsxs.map((row) => row[i]));
 const range = (min) => (max) => [...Array(max).keys()].map((_, i) => i + min);
 const reduce = (f) => (z) => (xs) => xs.reduce((acc, x) => f(acc)(x), z);
 const rep = (c) => (n) => map(k(c))(range(0)(n));
