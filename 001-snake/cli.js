@@ -14,7 +14,7 @@ let timer;
 // Game loop update
 function update() {
   state = next(state);
-  if (Matrix.present(state)) {
+  if (Matrix(state)) {
     clearInterval(timer);
     process.exit();
   }

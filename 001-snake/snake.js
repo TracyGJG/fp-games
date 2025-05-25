@@ -19,7 +19,7 @@ const { COLS, ROWS, MOVES, INITIAL_MOVE, NON_SNAKE } = CONSTANTS;
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
 const willCrash = (state) => state.snake.find(pointEq(nextHead(state)));
 const validMove = (move) => (state) => move &&
-  (state.moves[0].x + MOVES[move].x !==0 || state.moves[0].y + MOVES[move].y !== 0);
+  ((state.moves[0].x + MOVES[move].x) || (state.moves[0].y + MOVES[move].y));
 
 // Next values based on state
 const nextMoves = (state) =>

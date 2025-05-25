@@ -2,7 +2,7 @@ const adjust = (n) => (f) => (xs) => mapi((x) => (i) => i === n ? f(x) : x)(xs);
 const append =
   (a) =>
   (...e) =>
-    a.concat(e);
+    [...a, ...e];
 const dropFirst = (xs) => xs.slice(1);
 const dropLast = (xs) => xs.slice(0, xs.length - 1);
 const id = (x) => x;
@@ -15,8 +15,11 @@ const objOf = (k) => (v) => ({ [k]: v });
 const pipe =
   (...fns) =>
   (x) =>
-    [...fns].reduce((acc, f) => f(acc), x);
-const pointEq = (p1) => (p2) => p1.x === p2.x && p1.y === p2.y;
+    fns.reduce((acc, f) => f(acc), x);
+const pointEq =
+  ({ x: x1, y: y1 }) =>
+  ({ x: x2, y: y2 }) =>
+    x1 === x2 && y1 === y2;
 const prop = (k) => (o) => o[k];
 const range = (n) => (m) => [...Array(m - n)].map((_, i) => n + i);
 const rep = (c) => (n) => map(k(c))(range(0)(n));
