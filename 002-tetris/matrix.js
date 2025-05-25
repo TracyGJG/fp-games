@@ -62,17 +62,17 @@ const makePlayer = () => ({ x: 3, y: 0, piece: randomPiece() });
 const rotatePlayer = (p) => ({ ...p, piece: rotateMatrix(p.piece) });
 
 const mountBoard = (p) => mountMatrix((o) => (n) => n || o)(p)(p.piece);
+const rendering = pipe(
+  toMatrix,
+  map(map(pieceToString)),
+  frame,
+  toString
+);
 
 const present = (state) => {
-  const rendering = pipe(
-    toMatrix,
-    map(map(pieceToString)),
-    frame,
-    toString
-  )(state);
   const _isFinished = frameIsFull(state);
   if (!frameIsFull(state)) {
-    console.log(clear(rendering));
+    console.log(clear(rendering(state)));
     // console.log(clear(''));
     // console.table(state.board);
     _isFinished && console.log(`GAME OVER${NEW_LINE}`);
