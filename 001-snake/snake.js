@@ -13,6 +13,7 @@ import {
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE } = CONSTANTS;
+let points = 10;
 
 // Predicates
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
@@ -23,7 +24,16 @@ const validMove = (move) => (state) => move &&
 // Next values based on state
 const nextMoves = (state) =>
   state.moves.length > 1 ? dropFirst(state.moves) : state.moves;
-const nextApple = (state) => (willEat(state) ? rndPos(state) : state.apple);
+const nextApple = (state) => {
+  if (willEat(state)) {
+    (state.snake.length > ROWS) && (points = 20);
+    (state.snake.length > COLS) && (points = 30);
+    (state.snake.length > (COLS + ROWS)) && (points = 50);
+    state.score += points;
+    return rndPos(state);
+  } 
+  return state.apple;
+};
 const nextHead = (state) => {
   const modAxis = (axis, coord) =>
     mod(state[axis])(state.snake[0][coord] + state.moves[0][coord]);
@@ -36,7 +46,8 @@ const nextHead = (state) => {
 };
 const nextSnake = (state) => {
   if (willCrash(state)) {
-    state.lives = state.lives - 1;
+    state.lives -= 1;
+    points = 10;
     console.log(`nextSnake ${state.lives}\n`);
     return NON_SNAKE;
   } else {

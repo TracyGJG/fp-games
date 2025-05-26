@@ -52,7 +52,7 @@ const draw = () => {
   }
 
   domLives.innerText = `Lives: ${'X'.repeat(state.lives).padStart(INITIAL_LIVES, '_')}`;
-  const score = `${state.score}`.padStart(10, '0');
+  const score = `${state.score}`.padStart(6, '0');
   domScore.innerText = `Score: ${score}`;
   return state.lives;
 };
