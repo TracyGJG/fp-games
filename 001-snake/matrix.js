@@ -30,10 +30,10 @@ const matrixFromState = (state) =>
 
 export default (state) => {
   const lives = 'X'.repeat(state.lives).padStart(INITIAL_LIVES, '_');
-  const score = `${state.score}`.padStart(10, '0');
+  const score = `${state.score}`.padStart(6, '0');
   console.log(
     clear(
-      `Lives: ${lives} ${' '.repeat(50)} Score: ${score}`,
+      `Lives: ${lives}${'  '.repeat(28)}Score: ${score}`,
       `${matrixToString(matrixFromState(state))}`
     )
   );
