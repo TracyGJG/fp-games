@@ -1,11 +1,11 @@
 import readline from 'readline';
 
-import Matrix from './matrix.js';
-
 import { initialState, enqueue, next } from './snake.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, ESCAPE, FRAME_DELAY } = CONSTANTS;
+const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, ESCAPE, FRAME_DELAY, NEW_LINE } = CONSTANTS;
+
+const clear = (..._) => `\x1Bc${_.join(NEW_LINE)}`;
 
 // Mutable state
 let state = initialState();
@@ -14,7 +14,8 @@ let timer;
 // Game loop update
 function update() {
   state = next(state);
-  if (Matrix(state)) {
+  console.log(clear(state.rendering));
+  if (!state.lives) {
     clearInterval(timer);
     console.log('Game Over\n');
     process.exit();

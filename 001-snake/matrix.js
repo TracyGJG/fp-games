@@ -4,7 +4,6 @@ import CONSTANTS from './constants.json' with { type: 'json' };
 
 const { EMPTY, NEW_LINE, APPLE, BACKGROUND, CRASH, SNAKE, INITIAL_LIVES } = CONSTANTS;
 
-const clear = (..._) => `\x1Bc${_.join(NEW_LINE)}`;
 const chars = (_) => `\x1B[1;${_}`;
 
 const _APPLE = chars(APPLE);
@@ -31,11 +30,6 @@ const matrixFromState = (state) =>
 export default (state) => {
   const lives = 'X'.repeat(state.lives).padStart(INITIAL_LIVES, '_');
   const score = `${state.score}`.padStart(6, '0');
-  console.log(
-    clear(
-      `Lives: ${lives}${'  '.repeat(28)}Score: ${score}`,
-      `${matrixToString(matrixFromState(state))}`
-    )
-  );
-  return !state.lives;
+  return `Lives: ${lives}${'  '.repeat(28)}Score: ${score}
+${matrixToString(matrixFromState(state))}`;
 };

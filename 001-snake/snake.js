@@ -11,6 +11,8 @@ import {
   spec,
 } from './base.js';
 
+import Matrix from './matrix.js';
+
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE } = CONSTANTS;
 let points = 10;
@@ -81,6 +83,7 @@ export const next = spec({
   apple: nextApple,
   score: prop('score'),
   lives: prop('lives'),
+  rendering: Matrix,
 });
 
 export const enqueue = (state, move) => validMove(move)(state)
