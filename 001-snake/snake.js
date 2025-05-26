@@ -12,7 +12,7 @@ import {
 } from './base.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, MOVES, NON_SNAKE } = CONSTANTS;
+const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE } = CONSTANTS;
 
 // Predicates
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
@@ -34,12 +34,17 @@ const nextHead = (state) => {
       }
     : rndPos(state);
 };
-const nextSnake = (state) =>
-  willCrash(state)
-    ? NON_SNAKE
-    : [nextHead(state)].concat(
-        willEat(state) ? state.snake : dropLast(state.snake)
-      );
+const nextSnake = (state) => {
+  if (willCrash(state)) {
+    state.lives = state.lives - 1;
+    console.log(`nextSnake ${state.lives}\n`);
+    return NON_SNAKE;
+  } else {
+    return [nextHead(state)].concat(
+      willEat(state) ? state.snake : dropLast(state.snake)
+    );
+  }
+};
 const initialMove = () => {
   const moves = Object.keys(MOVES);
   return [MOVES[moves[Math.floor(Math.random() * moves.length)]]];
@@ -47,6 +52,8 @@ const initialMove = () => {
 
 // Initial state
 export const initialState = () => ({
+  score: INITIAL_SCORE,
+  lives: INITIAL_LIVES,
   cols: COLS,
   rows: ROWS,
   moves: initialMove(),
@@ -61,6 +68,8 @@ export const next = spec({
   moves: nextMoves,
   snake: nextSnake,
   apple: nextApple,
+  score: prop('score'),
+  lives: prop('lives'),
 });
 
 export const enqueue = (state, move) => validMove(move)(state)

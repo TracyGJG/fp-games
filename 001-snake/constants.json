@@ -1,5 +1,5 @@
 {
-  "APPLE": "91m▓▓",
+  "APPLE": "91m██",
   "BACKGROUND": "32m░░",
   "COLS": 40,
   "CLI_KEY_MAPPINGS": [
@@ -8,7 +8,7 @@
     ["SOUTH", ["S", "J", "DOWN"]],
     ["WEST", ["D", "L", "RIGHT"]]
   ],
-  "CRASH": "34m██",
+  "CRASH": "34m▀▄",
   "COLOURS": {
     "background": "rgb(35,35,35)",
     "snake": "rgb(0,255,50)",
@@ -18,6 +18,8 @@
   "EMPTY": "",
   "ESCAPE": "escape",
   "FRAME_DELAY": 100,
+  "INITIAL_LIVES": 3,
+  "INITIAL_SCORE": 0,
   "MOVES": {
     "NORTH": { "x": 0, "y": -1 },
     "EAST": { "x": -1, "y": 0 },

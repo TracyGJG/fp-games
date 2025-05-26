@@ -16,6 +16,7 @@ function update() {
   state = next(state);
   if (Matrix(state)) {
     clearInterval(timer);
+    console.log('Game Over\n');
     process.exit();
   }
 }

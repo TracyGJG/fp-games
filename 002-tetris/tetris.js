@@ -94,6 +94,8 @@ const maybeMoveDown = ifelse(isAnimating)(id)(
 );
 
 export const initialState = k({
+  score: INITIAL_SCORE,
+  lives: INITIAL_LIVES,
   time: 0,
   wait: WAIT,
   board: Matrix.makeGame(ROWS)(COLS),

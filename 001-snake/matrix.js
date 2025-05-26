@@ -2,10 +2,10 @@ import { adjust, id, k, map, pipe, rep } from './base.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 
-const { EMPTY, NEW_LINE, APPLE, BACKGROUND, CRASH, SNAKE } = CONSTANTS;
+const { EMPTY, NEW_LINE, APPLE, BACKGROUND, CRASH, SNAKE, INITIAL_LIVES } = CONSTANTS;
 
+const clear = (..._) => `\x1Bc${_.join(NEW_LINE)}`;
 const chars = (_) => `\x1B[1;${_}`;
-const clear = (_) => `\x1Bc${_}`;
 
 const _APPLE = chars(APPLE);
 const _CRASH = chars(CRASH);
@@ -21,13 +21,20 @@ const addCrash = (state) =>
 
 const matrixToString = (xsxs) => xsxs.map((xs) => xs.join(EMPTY)).join(NEW_LINE);
 const matrixFromState = (state) =>
-    pipe(
-      make,
-      addSnake(state),
-      addApple(state),
-      addCrash(state)
-    )(state);
+  pipe(
+    make,
+    addSnake(state),
+    addApple(state),
+    addCrash(state)
+  )(state);
 
 export default (state) => {
-  console.log(clear(matrixToString(matrixFromState(state))));
+  const lives = 'X'.repeat(state.lives).padStart(INITIAL_LIVES, '_');
+  console.log(
+    clear(
+      `Lives: ${lives}`,
+      `${matrixToString(matrixFromState(state))}`
+    )
+  );
+  return !state.lives;
 };
