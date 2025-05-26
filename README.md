@@ -1,7 +1,7 @@
 ## Classic games rewritten in simple functional style.
 
 Support material for the screencast series
-[Game Development with Functional Programming in JavaScript](https://www.youtube.com/playlist?list=PLrhzvIcii6GOfRvsaVVdYSRjRhPWgAIKc).
+[Game Development with Functional Programming in JavaScript](https://www.youtube.com/playlist?list=PLrhzvIcii6GOfRvsaVVdYSRjRhPWgAIKc) by Dr Christopher Okhravi.
 
 Part One: Describes the overall structure and the mechanics of the (snake) games 'engine'.
 Part Two: Discusses use of the engine through a Command Line Interface (CLI).
@@ -27,6 +27,18 @@ const append =
   (a) =>
   (...es) =>
     [...a, ...es];
+```
+
+I was also able to simplify the `mod` function, able to calculate the modulus when given a negative value.
+
+```js
+const mod = (x) => (y) => ((y % x) + x) % x;
+```
+
+Instead of the above, the following function can be used.
+
+```js
+const mod = (x) => (y) => (y + x) % x;
 ```
 
 ### Tetris Game
