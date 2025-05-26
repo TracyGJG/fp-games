@@ -51,7 +51,9 @@ const draw = () => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
-  domLives.innerText = `Lives: ${'X'.repeat(state.lives).padStart(INITIAL_LIVES, '_')}`;
+  // add header
+  const lives = 'X'.repeat(state.lives).padStart(INITIAL_LIVES, '_');
+  domLives.innerText = `Lives: ${lives}`;
   const score = `${state.score}`.padStart(6, '0');
   domScore.innerText = `Score: ${score}`;
   return state.lives;

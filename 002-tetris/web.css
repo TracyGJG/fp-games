@@ -11,3 +11,12 @@ body {
   text-align: center;
   align-content: center;
 }
+
+main {
+  display: inline-block;
+}
+
+h1,
+h2 {
+  text-align: center;
+}

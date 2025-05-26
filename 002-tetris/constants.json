@@ -54,7 +54,6 @@
   "EMPTY": "",
   "ESCAPE": "escape",
   "FRAME_DELAY": 30,
-  "INITIAL_LIVES": 3,
   "INITIAL_POSITION": { "x": 3, "y": 0 },
   "INITIAL_SCORE": 0,
   "MOVES": {

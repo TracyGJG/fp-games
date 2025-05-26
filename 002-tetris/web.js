@@ -8,6 +8,8 @@ const { COLS, ROWS,
   FRAME_DELAY, COLOURS,
   BASE_HEIGHT, BLOCK_COLOURS } = CONSTANTS;
 
+const domScore = document.querySelector('h1');
+const domGameOver = document.querySelector('h2');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const CELL_INSET = 2;
@@ -40,10 +42,8 @@ function drawBlock(x, y, typeNum) {
 
 // Game loop draw
 const draw = () => {
-  const isGameOver = Matrix.gameFinished(state);
-
-  if (isGameOver) {
-    console.log('GAME OVER');
+  if (Matrix.gameFinished(state)) {
+    return false;
   }
   else {
     // clear
@@ -74,8 +74,8 @@ const draw = () => {
     state.board.forEach((r, i) => {
       r.forEach((col, j) => (col > 0) && drawBlock(j, i, col - 1))
     });
+    return true;
   }  
-  return !isGameOver;
 };
 
 // Game loop update
@@ -84,6 +84,8 @@ const update = (t1 = 0) => (t2) => {
     state = next(state);
     if (draw()) {
       window.requestAnimationFrame(update(t2));
+    } else {
+      domGameOver.removeAttribute('hidden');
     }
   } else {
     window.requestAnimationFrame(update(t1));

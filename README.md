@@ -49,17 +49,20 @@ The score can be calculated by how long the player lasts as indicated by the len
 
 The score will be calculated based on two factors:
 
-- How many rows have been completed, increasing in value according to how many are cleared by adding a single piece.
-  - One row = 100 points
-  - 2 rows = 250 points
-  - 3 rows = 500
-  - 4 rows = 1000 points.
+1. How many rows have been completed, increasing in value according to how many are cleared by adding a single piece.
+
+- One row = 100 points
+- 2 rows = 250 points
+- 3 rows = 500
+- 4 rows = 1000 points.
 - Plus, if there are no pieces left on the board after the rows have been cleared, the bonus will be doubled.
-- Points will also be awarded for each piece settled based on its complexity (its rotation symmetry.)
-  - O (sqaure): 4 lines of symmetry = 10 points
-  - I (line): 2 lines of symmetry = 20 points
-  - S: 2 lines of symmetry = 20 points
-  - Z: 2 lines of symmetry = 20 points
-  - J: 0 lines of symmetry = 40 points
-  - L: 0 lines of symmetry = 40 points
-  - T: 0 lines of symmetry = 40 points
+
+2. Points will also be awarded for each piece settled based on its complexity (its rotation symmetry.)
+
+- O (sqaure): 4 lines of symmetry = 10 points
+- I (line): 2 lines of symmetry = 20 points
+- S: 2 lines of symmetry = 20 points
+- Z: 2 lines of symmetry = 20 points
+- J: 0 lines of symmetry = 40 points
+- L: 0 lines of symmetry = 40 points
+- T: 0 lines of symmetry = 40 points

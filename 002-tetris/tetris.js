@@ -23,7 +23,7 @@ import {
 import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, MOVES, WAIT, CONDENCE } = CONSTANTS;
+const { COLS, ROWS, MOVES, WAIT, CONDENCE, INITIAL_SCORE } = CONSTANTS;
 
 const movePlayer = (f) => (s) => {
   if (isAnimating(s)) return s;
@@ -95,7 +95,6 @@ const maybeMoveDown = ifelse(isAnimating)(id)(
 
 export const initialState = k({
   score: INITIAL_SCORE,
-  lives: INITIAL_LIVES,
   time: 0,
   wait: WAIT,
   board: Matrix.makeGame(ROWS)(COLS),
