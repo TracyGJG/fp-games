@@ -125,6 +125,7 @@
     }
   },
   "ROWS": 22,
+  "ROW_SCORE": [0, 100, 250, 500, 1000],
   "WAIT": 15,
   "WEB_KEY_MAPPINGS": [
     ["rotate", ["W", "K", "ARROWUP"]],

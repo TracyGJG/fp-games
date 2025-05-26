@@ -23,7 +23,7 @@ import {
 import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, MOVES, WAIT, CONDENCE, INITIAL_SCORE } = CONSTANTS;
+const { COLS, ROWS, ROW_SCORE, MOVES, WAIT, CONDENCE, INITIAL_SCORE } = CONSTANTS;
 
 const movePlayer = (f) => (s) => {
   if (isAnimating(s)) return s;
@@ -69,12 +69,16 @@ const Moves = {
 const swipe = (s) => ({
   ...s,
   board: s.board.map(
-    ifelse(all(both(flip(gt)(0))(flip(lt)(10))))(k(CONDENCE))(id)
+    ifelse(all(
+      both(flip(gt)(0))(flip(lt)(10))
+    ))(k(CONDENCE))(id)
   ),
 });
  const clear = (s) => {
   let remains = filter(any(not(eq(-1))))(s.board);
+  const isClear = !Math.max(...remains.flat());
   let count = s.board.length - remains.length;
+  s.score += (ROW_SCORE[count] * (isClear ? 2 : 1));
   let newlines = rep(Matrix.row(0)(remains))(count);
   let board = concat(newlines)(remains);
   return { ...s, board };
