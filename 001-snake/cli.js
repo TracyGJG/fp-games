@@ -14,12 +14,12 @@ let timer;
 // Game loop update
 function update() {
   state = next(state);
-  console.log(clear(state.rendering));
   if (!state.lives) {
     clearInterval(timer);
     console.log('Game Over\n');
     process.exit();
   }
+  console.log(clear(state.rendering));
 }
 
 // Key events

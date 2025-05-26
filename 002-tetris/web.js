@@ -1,5 +1,3 @@
-import Matrix from './matrix.js';
-
 import { initialState, enqueue, next } from './tetris.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
@@ -42,50 +40,48 @@ function drawBlock(x, y, typeNum) {
 
 // Game loop draw
 const draw = () => {
-  if (Matrix.gameFinished(state)) {
-    return false;
-  }
-  else {
-    // clear
-    ctx.fillStyle = COLOURS.background;
-    ctx.fillRect(0, 0, canvas.width, (canvas.height - BASE_HEIGHT));
+  // clear
+  ctx.fillStyle = COLOURS.background;
+  ctx.fillRect(0, 0, canvas.width, (canvas.height - BASE_HEIGHT));
 
-    // finish line
-    ctx.fillStyle = COLOURS.finish;
-    for(let row=0; row<4; row++) {
-      for(let col=0; col<COLS; col++) {
-        ctx.fillRect((col * CELL_WIDTH) + (row % 2 * X_OFFSET), row * Y_OFFSET, X_OFFSET, Y_OFFSET);
-      }
+  // finish line
+  ctx.fillStyle = COLOURS.finish;
+  for(let row=0; row<4; row++) {
+    for(let col=0; col<COLS; col++) {
+      ctx.fillRect((col * CELL_WIDTH) + (row % 2 * X_OFFSET), row * Y_OFFSET, X_OFFSET, Y_OFFSET);
     }
+  }
 
-    // base
-    ctx.fillStyle = COLOURS.base;
-    ctx.fillRect(0, canvas.height - BASE_HEIGHT, canvas.width, BASE_HEIGHT);
+  // base
+  ctx.fillStyle = COLOURS.base;
+  ctx.fillRect(0, canvas.height - BASE_HEIGHT, canvas.width, BASE_HEIGHT);
 
-    // player
-    const {x, y, piece} =   state.player;
-    piece.forEach((row, i) => {
-      row.forEach((col, j) => {
-        col && drawBlock(j + x, i + y, col - 1)
-      });
+  // player
+  const {x, y, piece} =   state.player;
+  piece.forEach((row, i) => {
+    row.forEach((col, j) => {
+      col && drawBlock(j + x, i + y, col - 1)
     });
+  });
 
-    // blocks
-    state.board.forEach((r, i) => {
-      r.forEach((col, j) => (col > 0) && drawBlock(j, i, col - 1))
-    });
-    return true;
-  }  
+  // blocks
+  state.board.forEach((r, i) => {
+    r.forEach((col, j) => (col > 0) && drawBlock(j, i, col - 1))
+  });
+
+  // Score
+  domScore.innerText = `Score: ${state.score}`;
 };
 
 // Game loop update
 const update = (t1 = 0) => (t2) => {
   if (t2 - t1 > FRAME_DELAY) {
     state = next(state);
-    if (draw()) {
-      window.requestAnimationFrame(update(t2));
-    } else {
+    if (state.gameOver) {
       domGameOver.removeAttribute('hidden');
+    } else {
+      draw();
+      window.requestAnimationFrame(update(t2));
     }
   } else {
     window.requestAnimationFrame(update(t1));

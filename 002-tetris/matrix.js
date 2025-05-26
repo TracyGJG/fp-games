@@ -14,11 +14,6 @@ import {
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, BLOCKS, CHAR_COLOURS, CHARS, EMPTY, NEW_LINE, PIECES } = CONSTANTS;
 
-const clear = (_) => `\x1Bc${_}`;
-
-const gameFinished = (state) =>
-  state.board.slice(0,2).some((row) => /[1-7]/.test(row.join()));
-
 const applyColour = (colCode) => (char) => `\x1b[${colCode}m${char}\x1b[0m`;
 const Color = Object.entries(CHAR_COLOURS).reduce((cols, [col, code]) => ({...cols, 
   [col]: applyColour(code)
@@ -69,6 +64,10 @@ const rotatePlayer = (p) => ({ ...p, piece: rotateMatrix(p.piece) });
 
 const mountBoard = (p) => mountMatrix((o) => (n) => n || o)(p)(p.piece);
 
+const gameFinished = (state) => ({...state,
+  gameOver: state.board.slice(0,2).some((row) => /[1-7]/.test(row.join()))
+});
+
 const rendering = pipe(
   toMatrix,
   map(map(pieceToString)),
@@ -77,13 +76,9 @@ const rendering = pipe(
   toString
 );
 
-const present = (state) => {
-  const _isFinished = gameFinished(state);
-  console.log(_isFinished ?
-    `GAME OVER${NEW_LINE}` :
-    clear(rendering(state)));
-  return _isFinished;
-};
+const present = (state) => ({ ...state,
+  rendering: rendering(state)
+});
 
 export default {
     combine,

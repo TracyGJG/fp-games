@@ -106,7 +106,9 @@ export const next = pipe(
   nextTime,
   maybeMoveDown,
   clear,
-  swipe
+  swipe,
+  Matrix.gameFinished,
+  Matrix.present
 );
 
 export const enqueue = (state, action) =>
