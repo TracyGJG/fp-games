@@ -25,12 +25,12 @@ function update() {
 (() => {
   readline.emitKeypressEvents(process.stdin);
   process.stdin.setRawMode(true);
-  process.stdin.on('keypress', (_str, key) => {
+  process.stdin.on('keypress', (_, key) => {
     if (key.name === ESCAPE) {
       clearInterval(timer);
       process.exit();
     }
-    const action = KEY_MAPPINGS.find(([_key, codes]) =>
+    const action = KEY_MAPPINGS.find(([_, codes]) =>
       codes.includes(key.name?.toUpperCase())
     )?.[0];
     state = enqueue(state, action);

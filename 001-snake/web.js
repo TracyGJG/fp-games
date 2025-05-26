@@ -1,8 +1,11 @@
 import { initialState, enqueue, next } from './snake.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY, COLOURS } = CONSTANTS;
+const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY, COLOURS, INITIAL_LIVES } = CONSTANTS;
 
+const domLives = document.querySelector('#lives');
+const domScore = document.querySelector('#score');
+const domGameOver = document.querySelector('h2');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const FULL_CIRCLE = 2 * Math.PI;
@@ -47,14 +50,22 @@ const draw = () => {
     ctx.fillStyle = COLOURS.crash;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
+
+  domLives.innerText = `Lives: ${'X'.repeat(state.lives).padStart(INITIAL_LIVES, '_')}`;
+  const score = `${state.score}`.padStart(10, '0');
+  domScore.innerText = `Score: ${score}`;
+  return state.lives;
 };
 
 // Game loop update
 const update = (t1 = 0) => (t2) => {
   if (t2 - t1 > FRAME_DELAY) {
     state = next(state);
-    draw();
-    window.requestAnimationFrame(update(t2));
+    if (draw()) {
+      window.requestAnimationFrame(update(t2));
+    } else {
+      domGameOver.removeAttribute('hidden');
+    }
   } else {
     window.requestAnimationFrame(update(t1));
   }
