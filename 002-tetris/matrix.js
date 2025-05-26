@@ -57,8 +57,8 @@ const movePlayer = (d) => (p) => ({
   y: p.y + (d.y || 0),
 });
 const makePlayer = () => {
-  const piece = randomPiece();
-  return { x: Math.floor((COLS - piece.length) / 2), y: -1, piece };
+  const {structure: piece, points} = randomPiece();
+  return { x: Math.floor((COLS - piece.length) / 2), y: -1, piece, points };
 }
 const rotatePlayer = (p) => ({ ...p, piece: rotateMatrix(p.piece) });
 
@@ -87,7 +87,7 @@ export default {
     makePlayer,
     mountBoard,
     movePlayer,
-    present,
+    rendering,
     rotatePlayer,
     row,
 };

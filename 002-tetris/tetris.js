@@ -41,6 +41,7 @@ const Moves = {
     return s2.player === s.player
       ? {
           ...s,
+          score: s.score + s.player.points,
           board: Matrix.mountBoard(s.player)(s.board),
           player: Matrix.makePlayer(),
         }
@@ -93,6 +94,11 @@ const maybeMoveDown = ifelse(isAnimating)(id)(
   ifelse(timeToMove)(Moves.moveDown)(id)
 );
 
+const render = (s) => {
+  const score = `${s.score}`.padStart(6, ' ');
+  return {...s, rendering: `   Score:  ${score}\n${Matrix.rendering(s)}`};
+};
+
 export const initialState = k({
   score: INITIAL_SCORE,
   time: 0,
@@ -108,7 +114,7 @@ export const next = pipe(
   clear,
   swipe,
   Matrix.gameFinished,
-  Matrix.present
+  render
 );
 
 export const enqueue = (state, action) =>

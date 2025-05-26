@@ -16,7 +16,7 @@ function update() {
   state = next(state);
   if (state.gameOver) {
     clearInterval(timer);
-    console.log('Game Over\n');
+    console.log('     Game Over\n');
     process.exit();
   }
   console.log(clear(state.rendering));

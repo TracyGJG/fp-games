@@ -10,27 +10,6 @@ The game Tetris implemented with functional style in JavaScript without librarie
 
 ## Files
 
-### Current
-
-```mermaid
-flowchart LR
-    game --> web
-    game --> cli
-    matrix --> web
-    matrix --> cli
-    matrix --> game
-    general --> game
-    general --> matrix
-
-game([tetris.js])
-general([general.js])
-matrix([matrix.js])
-cli([Terminal])
-web([Browser])
-```
-
-### Desired
-
 ```mermaid
 flowchart LR
     game --> web
