@@ -14,48 +14,25 @@ const CELL_INSET = 2;
 
 // Mutable state
 let state = initialState();
-// {
-//   board: [
-//     [ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 2, 2, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 2, 2, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 3, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 3, 3, 3, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 4, 4, 0, 0, 0, 0, 0, 0, 0],
-//     [ 4, 4, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 5, 5, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 5, 5, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 6, 6, 6, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 6, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 7, 0, 0, 0],
-//     [ 0, 0, 0, 0, 7, 7, 7, 0, 0, 0],
-//     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-//     [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 0],
-//     [ 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-//   ]
-// }
-
 
 // Position helpers
 const x = (c) => Math.round((c * canvas.width) / COLS);
 const y = (r) => Math.round((r * (canvas.height - BASE_HEIGHT)) / ROWS);
 const CELL_WIDTH = x(1);
 const CELL_HEIGHT = y(1);
+const X_OFFSET = x(0.5);
+const Y_OFFSET = y(0.5);
+
 
 function drawBlock(x, y, typeNum) {
+  const _typeNum = Math.min(typeNum, 7);
   const _x = x * CELL_WIDTH + CELL_INSET;
   const _y = y * CELL_HEIGHT + CELL_INSET;
 
-  ctx.fillStyle = BLOCK_COLOURS[typeNum].fill;
+  ctx.fillStyle = BLOCK_COLOURS[_typeNum].fill;
   ctx.fillRect(_x + 1, _y + 1, CELL_WIDTH - (3 * CELL_INSET), CELL_HEIGHT - (3 * CELL_INSET));
 
-  ctx.strokeStyle = BLOCK_COLOURS[typeNum].border;
+  ctx.strokeStyle = BLOCK_COLOURS[_typeNum].border;
   ctx.beginPath();
   ctx.rect(_x, _y, CELL_WIDTH - (2 * CELL_INSET), CELL_HEIGHT - (2 * CELL_INSET));
   ctx.stroke();
@@ -63,32 +40,53 @@ function drawBlock(x, y, typeNum) {
 
 // Game loop draw
 const draw = () => {
-  // clear
-  ctx.fillStyle = COLOURS.background;
-  ctx.fillRect(0, 0, canvas.width, (canvas.height - BASE_HEIGHT));
+  const isGameOver = Matrix.gameFinished(state);
 
-  // base
-  ctx.fillStyle = COLOURS.base;
-  ctx.fillRect(0, canvas.height - BASE_HEIGHT, canvas.width, BASE_HEIGHT);
+  if (isGameOver) {
+    console.log('GAME OVER');
+  }
+  else {
+    // clear
+    ctx.fillStyle = COLOURS.background;
+    ctx.fillRect(0, 0, canvas.width, (canvas.height - BASE_HEIGHT));
 
-  // blocks
-  state.board.forEach((r, i) => {
-    r.forEach((c, j) => c && drawBlock(j, i, c - 1))
-  });
+    // finish line
+    ctx.fillStyle = COLOURS.finish;
+    for(let row=0; row<4; row++) {
+      for(let col=0; col<COLS; col++) {
+        ctx.fillRect((col * CELL_WIDTH) + (row % 2 * X_OFFSET), row * Y_OFFSET, X_OFFSET, Y_OFFSET);
+      }
+    }
+
+    // base
+    ctx.fillStyle = COLOURS.base;
+    ctx.fillRect(0, canvas.height - BASE_HEIGHT, canvas.width, BASE_HEIGHT);
+
+    // player
+    const {x, y, piece} =   state.player;
+    piece.forEach((row, i) => {
+      row.forEach((col, j) => {
+        col && drawBlock(j + x, i + y, col - 1)
+      });
+    });
+
+    // blocks
+    state.board.forEach((r, i) => {
+      r.forEach((col, j) => (col > 0) && drawBlock(j, i, col - 1))
+    });
+  }  
+  return !isGameOver;
 };
 
 // Game loop update
 const update = (t1 = 0) => (t2) => {
-  if (Matrix.frameIsFull(state)) {
-    console.log('GAME OVER');
-  } else {
-    if (t2 - t1 > FRAME_DELAY) {
-      state = next(state);
-      draw();
+  if (t2 - t1 > FRAME_DELAY) {
+    state = next(state);
+    if (draw()) {
       window.requestAnimationFrame(update(t2));
-    } else {
-      window.requestAnimationFrame(update(t1));
     }
+  } else {
+    window.requestAnimationFrame(update(t1));
   }
 };
 
@@ -102,5 +100,3 @@ window.addEventListener('keydown', (e) => {
 
 // Main
 window.requestAnimationFrame(update());
-
-// draw();

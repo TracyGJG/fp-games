@@ -16,7 +16,6 @@ function update() {
   state = next(state);
   if (Matrix.present(state)) {
     clearInterval(timer);
-    console.log('GAME OVER');
     process.exit();
   }
 }
