@@ -4,7 +4,9 @@ Support material for the screencast series
 [Game Development with Functional Programming in JavaScript](https://www.youtube.com/playlist?list=PLrhzvIcii6GOfRvsaVVdYSRjRhPWgAIKc) by Dr Christopher Okhravi.
 
 Part One: Describes the overall structure and the mechanics of the (snake) games 'engine'.
+
 Part Two: Discusses use of the engine through a Command Line Interface (CLI).
+
 Part Three: Covers how a web (browser-based) user interface can utilise the engine.
 
 ## Revisions
