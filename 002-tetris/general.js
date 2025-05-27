@@ -21,10 +21,7 @@ const mapi = (f) => (xs) => xs.map((x, i) => f(x)(i));
 const mirror = (xsxs) => xsxs.map((xs) => xs.reverse());
 const not = (f) => (x) => !f(x);
 const or = (x) => (y) => x || y;
-const pipe =
-  (...fs) =>
-  (x) =>
-    [...fs].reduce((acc, f) => f(acc), x);
+const pipe = (...fs) => (x) => fs.reduce((acc, f) => f(acc), x);
 const prop = (p) => (o) => o[p];
 const transpose = (xsxs) => xsxs[0].map((_, i) => xsxs.map((row) => row[i]));
 const range = (min) => (max) => [...Array(max).keys()].map((_, i) => i + min);
