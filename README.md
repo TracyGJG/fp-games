@@ -18,8 +18,7 @@ In addition to the Snake game (001) there is a Tetris implementation (002) but t
 1. Convert the Common JS module system, and the web bypass code, for the ES6 module syntax usable in both environments.
 2. Extract constant values into a JSON file and import it into the engine (snake.js) file.
 3. Extract the matrix manipulation operations fro the CLI version into their own file (matrix.js).
-4. The CLI version is revised to use extended ASCII graphics (like the Tetris game) in place of the simple ASCII characters.
-5. ASCII escape sequences have also been used to apply colour.
+4. The CLI version is revised to use extended ASCII graphics (like the Tetris game) in place of the simple ASCII characters, and ASCII escape sequences have also been used to apply colour.
 6. Generalised the `append` function and included it in the base.js file.
 
 ```js
@@ -31,7 +30,7 @@ const append =
     [...a, ...es];
 ```
 
-I was also able to simplify the `mod` function, able to calculate the modulus when given a negative value.
+I was also able to simplify the `mod` function, able to correclty calculate the modulus when given a negative value.
 
 ```js
 const mod = (x) => (y) => ((y % x) + x) % x;
@@ -65,18 +64,24 @@ The score will be calculated based on two factors:
 
 1. How many rows have been completed, increasing in value according to how many are cleared by adding a single piece.
 
-- One row = 100 points
-- 2 rows = 250 points
-- 3 rows = 500
-- 4 rows = 1000 points.
-- Plus, if there are no pieces left on the board after the rows have been cleared, the bonus will be doubled.
+| Rows | Points |
+| :--: | :----: |
+| 1 | 100 |
+| 2 | 250 |
+| 3 | 500 |
+| 4 | 1000 |
+
+  Plus, if there are no pieces left on the board after the rows have been cleared, the bonus will be doubled.
 
 2. Points will also be awarded for each piece settled based on its complexity (its rotation symmetry.)
 
-- O (sqaure): 4 lines of symmetry = 10 points
-- I (line): 2 lines of symmetry = 20 points
-- S: 2 lines of symmetry = 20 points
-- Z: 2 lines of symmetry = 20 points
-- J: 0 lines of symmetry = 40 points
-- L: 0 lines of symmetry = 40 points
-- T: 0 lines of symmetry = 40 points
+  | Piece | Shape | Rotational Symmetry | Points |
+  | :---: | :---: | :----------------: | :-----: |
+  |   O   | Square | 4 | 10 |
+  | I | Line | 2 | 20 |
+  | S | Right-left | 2 | 20 |
+  | Z | Left-right | 2 | 20 |
+  | J | Left bend | 0 | 40 |
+  | L | Right bend | 0 | 40 |
+  | T | - | 0 | 40 |
+  
