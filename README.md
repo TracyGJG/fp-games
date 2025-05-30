@@ -96,3 +96,16 @@ It is quite conventional for the main game loop to be infinate (never ending) an
 
 ### Game state management
 As the game starts an `initialiseState` call is made to the game logic module (GLM). This prepares the initial state model and returns a reference to it. The GML also exposes `next` and `enqueue` functions. The `next` function is used to prompt the GLM in to refreshing the state model prior to a rendering refresh (or termination) and is frequently executed by the `update` function. The AUI monitors interaction from the user (primarily keyboard input) and translates it into an action (when it can) before issuing an `enqueue` call to instigate an update to the game state. 
+
+```mermaid
+flowchart LR
+    A --> I --> G
+    A --> N --> G
+    A --> E --> G
+
+A[Application User Interface]
+G[Game logic module]
+I[initialiseState]
+N[next]
+E[enqueue]
+```
