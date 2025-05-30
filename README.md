@@ -99,10 +99,14 @@ As the game starts an `initialiseState` call is made to the game logic module (G
 
 ```mermaid
 flowchart LR
-    A --> I --> G
-    A --> N --> G
-    A --> E --> G
+  W --> A
+  T --> A
+  A --> I --> G
+  A --> N --> G
+  A --> E --> G
 
+W[Web]
+T[Terminal]
 A[Application User Interface]
 G[Game logic module]
 I[initialiseState]
