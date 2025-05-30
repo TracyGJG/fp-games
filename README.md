@@ -19,7 +19,7 @@ In addition to the Snake game (001) there is a Tetris implementation (002) but t
 2. Extract constant values into a JSON file and import it into the engine (snake.js) file.
 3. Extract the matrix manipulation operations fro the CLI version into their own file (matrix.js).
 4. The CLI version is revised to use extended ASCII graphics (like the Tetris game) in place of the simple ASCII characters, and ASCII escape sequences have also been used to apply colour.
-6. Generalised the `append` function and included it in the base.js file.
+5. Generalised the `append` function and included it in the base.js file.
 
 ```js
 // a: source and target array
@@ -66,22 +66,33 @@ The score will be calculated based on two factors:
 
 | Rows | Points |
 | :--: | :----: |
-| 1 | 100 |
-| 2 | 250 |
-| 3 | 500 |
-| 4 | 1000 |
+|  1   |  100   |
+|  2   |  250   |
+|  3   |  500   |
+|  4   |  1000  |
 
-  Plus, if there are no pieces left on the board after the rows have been cleared, the bonus will be doubled.
+Plus, if there are no pieces left on the board after the rows have been cleared, the bonus will be doubled.
 
 2. Points will also be awarded for each piece settled based on its complexity (its rotation symmetry.)
 
-  | Piece | Shape | Rotational Symmetry | Points |
-  | :---: | :---: | :----------------: | :-----: |
-  |   O   | Square | 4 | 10 |
-  | I | Line | 2 | 20 |
-  | S | Right-left | 2 | 20 |
-  | Z | Left-right | 2 | 20 |
-  | J | Left bend | 0 | 40 |
-  | L | Right bend | 0 | 40 |
-  | T | - | 0 | 40 |
-  
+| Piece |   Shape    | Rotational Symmetry | Points |
+| :---: | :--------: | :-----------------: | :----: |
+|   O   |   Square   |          4          |   10   |
+|   I   |    Line    |          2          |   20   |
+|   S   | Right-left |          2          |   20   |
+|   Z   | Left-right |          2          |   20   |
+|   J   | Left bend  |          0          |   40   |
+|   L   | Right bend |          0          |   40   |
+|   T   |     -      |          0          |   40   |
+
+## How the games work - general mechanics
+
+Both the Snake game and Tetris comprise of a pair of User Interfaces (or Application User Interfaces AUIs if you will), one for the terminal (cli.js that uses Node.js) and the other for any web browser (web.html, web.js and web.css.) In addition there are two files one for the game logic (snake.js and tetris.js respectively) and another for matrix manipulation (matrix.js), which is the structure both games employ for their state management. There are some ancillary files: constants.json in which there are some game-specific constant values, and base.js/general.js that contain some (FP) utility functions. This section will concentrate on the inteaction between the AUI and the game logic but will not go in depth into the individual game logic.
+
+The AUIs are responsible for presenting the user output and capturing the user input. In this respect both games have very similar web and terminal implementations. Side-by-side inspection of the web and terminal AUIs will also reveal a common structure, which is not surprising given their role and how they both have to interactive/interface with the game logic module.
+
+### Main game loop
+It is quite conventional for the main game loop to be infinate (never ending) and for the conditions within the game to result in termination. In this respect both games in this project and their AUIs follow this pattern but the different AUIs (web v terminal) employ slightly different mechanisms. The CLI version uses the `setInterval` call to envoke the `update` function on a regular basis. The web version employs the `window.requestAnimarionFrame` method to synchronise repainting of the canvas, but both execute an `update` call-back function. Many games do not require user input to cause an update to the game state, the passage of time is sufficient, and this is true for both the Snake and Tetris games.
+
+### Game state management
+As the game starts an `initialiseState` call is made to the game logic module (GLM). This prepares the initial state model and returns a reference to it. The GML also exposes `next` and `enqueue` functions. The `next` function is used to prompt the GLM in to refreshing the state model prior to a rendering refresh (or termination) and is frequently executed by the `update` function. The AUI monitors interaction from the user (primarily keyboard input) and translates it into an action (when it can) before issuing an `enqueue` call to instigate an update to the game state. 
