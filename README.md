@@ -109,7 +109,7 @@ W[Web]
 T[Terminal]
 A[Application User Interface]
 G[Game logic module]
-I[initialiseState]
-N[next]
-E[enqueue]
+I(initialiseState)
+N(next)
+E(enqueue)
 ```
