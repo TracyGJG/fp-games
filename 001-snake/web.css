@@ -1,0 +1,26 @@
+html {
+  height: 100vh;
+  background: #121212;
+  color: #fff;
+}
+
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  align-content: center;
+}
+
+main {
+  display: inline-block;
+}
+
+h1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+h2 {
+  text-align: center;
+}

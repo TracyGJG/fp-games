@@ -1,0 +1,136 @@
+{
+  "BASE_HEIGHT": 20,
+  "BLOCK_COLOURS": [
+    { "fill": "#0bb", "border": "#0ff" },
+    { "fill": "#bb0", "border": "#ff0" },
+    { "fill": "#b0b", "border": "#f0f" },
+    { "fill": "#0b0", "border": "#0f0" },
+    { "fill": "#b00", "border": "#f00" },
+    { "fill": "#00b", "border": "#00f" },
+    { "fill": "#bbb", "border": "#fff" },
+    { "fill": "#000", "border": "#777" }
+  ],
+  "BLOCKS": [
+    ["space"],
+    ["block", "cyan"],
+    ["block", "yellow"],
+    ["block", "magenta"],
+    ["block", "green"],
+    ["block", "red"],
+    ["block", "blue"],
+    ["block", "white"],
+    ["space"]
+  ],
+  "CHAR_COLOURS": {
+    "black": 30,
+    "red": 31,
+    "green": 32,
+    "yellow": 33,
+    "blue": 34,
+    "magenta": 35,
+    "cyan": 36,
+    "white": 37
+  },
+  "CHARS": {
+    "space": " ",
+    "block": "▓",
+    "swipe": "░",
+    "base": "█",
+    "finish": "▀▄"
+  },
+  "CLI_KEY_MAPPINGS": [
+    ["rotate", ["W", "K", "UP"]],
+    ["moveLeft", ["A", "H", "LEFT"]],
+    ["moveDown", ["S", "J", "DOWN"]],
+    ["moveRight", ["D", "L", "RIGHT"]]
+  ],
+  "COLOURS": {
+    "background": "#333",
+    "base": "#777",
+    "finish": "#000"
+  },
+  "COLS": 10,
+  "CONDENCE": [10, 12, 14, 16, 18, 18, 16, 14, 12, 10],
+  "EMPTY": "",
+  "ESCAPE": "escape",
+  "FRAME_DELAY": 30,
+  "INITIAL_POSITION": { "x": 3, "y": 0 },
+  "INITIAL_SCORE": 0,
+  "MOVES": {
+    "LEFT": { "x": -1 },
+    "RIGHT": { "x": 1 },
+    "DOWN": { "y": 1 },
+    "LEFT2": { "x": -2 },
+    "RIGHT2": { "x": 2 }
+  },
+  "NEW_LINE": "\r\n",
+  "PIECES": {
+    "O": {
+      "points": 10,
+      "structure": [
+        [0, 0, 0, 0],
+        [0, 2, 2, 0],
+        [0, 2, 2, 0],
+        [0, 0, 0, 0]
+      ]
+    },
+    "I": {
+      "points": 20,
+      "structure": [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 1, 1, 1],
+        [0, 0, 0, 0]
+      ]
+    },
+    "S": {
+      "points": 20,
+      "structure": [
+        [0, 0, 0],
+        [0, 4, 4],
+        [4, 4, 0]
+      ]
+    },
+    "Z": {
+      "points": 20,
+      "structure": [
+        [0, 0, 0],
+        [5, 5, 0],
+        [0, 5, 5]
+      ]
+    },
+    "J": {
+      "points": 40,
+      "structure": [
+        [0, 0, 0],
+        [6, 6, 6],
+        [0, 0, 6]
+      ]
+    },
+    "L": {
+      "points": 40,
+      "structure": [
+        [0, 0, 0],
+        [7, 7, 7],
+        [7, 0, 0]
+      ]
+    },
+    "T": {
+      "points": 40,
+      "structure": [
+        [0, 0, 0],
+        [3, 3, 3],
+        [0, 3, 0]
+      ]
+    }
+  },
+  "ROWS": 22,
+  "ROW_SCORE": [0, 100, 250, 500, 1000],
+  "WAIT": 15,
+  "WEB_KEY_MAPPINGS": [
+    ["rotate", ["W", "K", "ARROWUP"]],
+    ["moveLeft", ["A", "H", "ARROWLEFT"]],
+    ["moveDown", ["S", "J", "ARROWDOWN"]],
+    ["moveRight", ["D", "L", "ARROWRIGHT"]]
+  ]
+}

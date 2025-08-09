@@ -1,0 +1,39 @@
+{
+  "APPLE": "91m██",
+  "BACKGROUND": "32m░░",
+  "COLS": 40,
+  "CLI_KEY_MAPPINGS": [
+    ["NORTH", ["W", "K", "UP"]],
+    ["EAST", ["A", "H", "LEFT"]],
+    ["SOUTH", ["S", "J", "DOWN"]],
+    ["WEST", ["D", "L", "RIGHT"]]
+  ],
+  "CRASH": "34m▀▄",
+  "COLOURS": {
+    "background": "rgb(35,35,35)",
+    "snake": "rgb(0,255,50)",
+    "apple": "rgb(255,50,0)",
+    "crash": "rgb(0,0,255)"
+  },
+  "EMPTY": "",
+  "ESCAPE": "escape",
+  "FRAME_DELAY": 100,
+  "INITIAL_LIVES": 4,
+  "INITIAL_SCORE": 0,
+  "MOVES": {
+    "NORTH": { "x": 0, "y": -1 },
+    "EAST": { "x": -1, "y": 0 },
+    "SOUTH": { "x": 0, "y": 1 },
+    "WEST": { "x": 1, "y": 0 }
+  },
+  "NEW_LINE": "\r\n",
+  "NON_SNAKE": [],
+  "ROWS": 30,
+  "SNAKE": "92m▓▓",
+  "WEB_KEY_MAPPINGS": [
+    ["NORTH", ["W", "K", "ARROWUP"]],
+    ["EAST", ["A", "H", "ARROWLEFT"]],
+    ["SOUTH", ["S", "J", "ARROWDOWN"]],
+    ["WEST", ["D", "L", "ARROWRIGHT"]]
+  ]
+}
