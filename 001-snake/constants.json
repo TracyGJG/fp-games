@@ -1,4 +1,5 @@
 {
+  "ANSI_ESCAPE": "\u001Bc",
   "APPLE": "91m██",
   "BACKGROUND": "32m░░",
   "COLS": 40,

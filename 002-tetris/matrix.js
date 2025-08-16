@@ -13,6 +13,11 @@ import {
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, BLOCKS, CHAR_COLOURS, CHARS, EMPTY, NEW_LINE, PIECES } = CONSTANTS;
+const NUM_PIECES = Object.keys(PIECES).length;
+const NUM_BLOCKS = BLOCKS.length;
+
+const pick = (xs) => xs[Math.floor(Math.random() * xs.length)];
+const randomPiece = () => pick(Object.values(PIECES));
 
 const applyColour = (colCode) => (char) => `\x1b[${colCode}m${char}\x1b[0m`;
 const Color = Object.entries(CHAR_COLOURS).reduce((cols, [col, code]) => ({...cols, 
@@ -20,10 +25,7 @@ const Color = Object.entries(CHAR_COLOURS).reduce((cols, [col, code]) => ({...co
 }), {});
 
 const chars = (type, colour) => colour ? Color[colour](CHARS[type].repeat(2)) : CHARS[type].repeat(2);
-const pieceToString = (n) => n > 7 ? chars('swipe') : chars(...BLOCKS[(9 + n)  % 9]);
-
-const pick = (xs) => xs[Math.floor(Math.random() * xs.length)];
-const randomPiece = () => pick(Object.values(PIECES));
+const pieceToString = (n) => n > NUM_PIECES ? chars('swipe') : chars(...BLOCKS[(NUM_BLOCKS + n)  % NUM_BLOCKS]);
 
 const rotateMatrix = pipe(transpose, mirror);
 const mountMatrix = (f) => (pos) => (m1) => (m2) =>

@@ -5,9 +5,9 @@ import readline from 'readline';
 import { initialState, enqueue, next } from './tetris.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { CLI_KEY_MAPPINGS: KEY_MAPPINGS, ESCAPE, FRAME_DELAY, NEW_LINE } = CONSTANTS;
+const { ANSI_ESCAPE, CLI_KEY_MAPPINGS: KEY_MAPPINGS, ESCAPE, FRAME_DELAY, NEW_LINE } = CONSTANTS;
 
-const clear = (..._) => `\x1Bc${_.join(NEW_LINE)}`;
+const clear = (..._) => `${ANSI_ESCAPE}${_.join(NEW_LINE)}`;
 
 // Mutable state
 let state = initialState();

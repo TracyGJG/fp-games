@@ -23,7 +23,7 @@ import {
 import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, ROW_SCORE, MOVES, WAIT, CONDENCE, INITIAL_SCORE } = CONSTANTS;
+const { COLS, ROWS, ROW_SCORE, MOVES, WAIT, CONDENCE, HEIGHT, INITIAL_SCORE, WIDTH } = CONSTANTS;
 
 const movePlayer = (f) => (s) => {
   if (isAnimating(s)) return s;
@@ -88,7 +88,7 @@ const animate = (s) => ({
   ...s,
   board: map(
     map(
-      pipe(ifelse(flip(gt)(7))(add(1))(id), ifelse(flip(gt)(30))(k(-1))(id))
+      pipe(ifelse(flip(gt)(WIDTH))(add(1))(id), ifelse(flip(gt)(HEIGHT))(k(-1))(id))
     )
   )(s.board),
 });
