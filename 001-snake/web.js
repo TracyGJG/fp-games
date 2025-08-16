@@ -1,7 +1,15 @@
 import { initialState, enqueue, next } from './snake.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, WEB_KEY_MAPPINGS: KEY_MAPPINGS, FRAME_DELAY, COLOURS, INITIAL_LIVES } = CONSTANTS;
+
+const {
+  COLS,
+  ROWS,
+  WEB_KEY_MAPPINGS: KEY_MAPPINGS,
+  FRAME_DELAY,
+  COLOURS,
+  INITIAL_LIVES,
+} = CONSTANTS;
 
 const domLives = document.querySelector('#lives');
 const domScore = document.querySelector('#score');
@@ -60,18 +68,20 @@ const draw = () => {
 };
 
 // Game loop update
-const update = (t1 = 0) => (t2) => {
-  if (t2 - t1 > FRAME_DELAY) {
-    state = next(state);
-    if (draw()) {
-      window.requestAnimationFrame(update(t2));
+const update =
+  (t1 = 0) =>
+  (t2) => {
+    if (t2 - t1 > FRAME_DELAY) {
+      state = next(state);
+      if (draw()) {
+        window.requestAnimationFrame(update(t2));
+      } else {
+        domGameOver.removeAttribute('hidden');
+      }
     } else {
-      domGameOver.removeAttribute('hidden');
+      window.requestAnimationFrame(update(t1));
     }
-  } else {
-    window.requestAnimationFrame(update(t1));
-  }
-};
+  };
 
 // Key events
 window.addEventListener('keydown', (e) => {
