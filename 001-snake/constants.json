@@ -1,5 +1,5 @@
 {
-  "ANSI_ESCAPE": "\u001Bc",
+  "ANSI_ESCAPE": "\u001B",
   "APPLE": "91m██",
   "BACKGROUND": "32m░░",
   "COLS": 40,
@@ -29,6 +29,12 @@
   },
   "NEW_LINE": "\r\n",
   "NON_SNAKE": [],
+  "POINTS": {
+    "INC": 10,
+    "LOW": 20,
+    "MED": 30,
+    "HIGH": 50
+  },
   "ROWS": 30,
   "SNAKE": "92m▓▓",
   "WEB_KEY_MAPPINGS": [

@@ -1,5 +1,5 @@
 {
-  "ANSI_ESCAPE": "\u001bc",
+  "ANSI_ESCAPE": "\u001b",
   "BASE_HEIGHT": 20,
   "BLOCK_COLOURS": [
     { "fill": "#0bb", "border": "#0ff" },
@@ -22,6 +22,7 @@
     ["block", "white"],
     ["space"]
   ],
+  "BLOCK_SIZE": 2,
   "CHAR_COLOURS": {
     "black": 30,
     "red": 31,

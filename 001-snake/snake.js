@@ -14,7 +14,7 @@ import {
 import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE } = CONSTANTS;
+const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE, POINTS } = CONSTANTS;
 let points = 10;
 
 // Predicates
@@ -28,9 +28,9 @@ const nextMoves = (state) =>
   state.moves.length > 1 ? dropFirst(state.moves) : state.moves;
 const nextApple = (state) => {
   if (willEat(state)) {
-    (state.snake.length > ROWS) && (points = 20);
-    (state.snake.length > COLS) && (points = 30);
-    (state.snake.length > (COLS + ROWS)) && (points = 50);
+    (state.snake.length > ROWS) && (points = POINTS.LOW);
+    (state.snake.length > COLS) && (points = POINTS.MED);
+    (state.snake.length > (COLS + ROWS)) && (points = POINTS.HIGH);
     state.score += points;
     return rndPos(state);
   } 
@@ -49,7 +49,7 @@ const nextHead = (state) => {
 const nextSnake = (state) => {
   if (willCrash(state)) {
     state.lives -= 1;
-    points = 10;
+    points = POINTS.INC;
     console.log(`nextSnake ${state.lives}\n`);
     return NON_SNAKE;
   } else {
