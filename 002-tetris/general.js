@@ -21,12 +21,15 @@ const mapi = (f) => (xs) => xs.map((x, i) => f(x)(i));
 const mirror = (xsxs) => xsxs.map((xs) => xs.reverse());
 const not = (f) => (x) => !f(x);
 const or = (x) => (y) => x || y;
-const pipe = (...fs) => (x) => fs.reduce((acc, f) => f(acc), x);
+const pipe =
+  (...fs) =>
+  (x) =>
+    fs.reduce((acc, f) => f(acc), x);
 const prop = (p) => (o) => o[p];
-const transpose = (xsxs) => xsxs[0].map((_, i) => xsxs.map((row) => row[i]));
 const range = (min) => (max) => [...Array(max).keys()].map((_, i) => i + min);
 const reduce = (f) => (z) => (xs) => xs.reduce((acc, x) => f(acc)(x), z);
 const rep = (c) => (n) => map(k(c))(range(0)(n));
+const transpose = (xsxs) => xsxs[0].map((_, i) => xsxs.map((row) => row[i]));
 
 export {
   add,
@@ -36,9 +39,9 @@ export {
   both,
   concat,
   eq,
-  flip,
   filter,
   find,
+  flip,
   gt,
   id,
   ifelse,

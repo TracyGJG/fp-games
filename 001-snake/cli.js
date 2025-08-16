@@ -40,5 +40,5 @@ function update() {
   });
 })();
 
-// Main
+// Main Timer
 timer = setInterval(update, FRAME_DELAY);

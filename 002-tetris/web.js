@@ -96,5 +96,5 @@ window.addEventListener('keydown', (e) => {
   state = enqueue(state, action);
 });
 
-// Main
+// Main Timer
 window.requestAnimationFrame(update());

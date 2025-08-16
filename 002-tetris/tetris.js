@@ -74,7 +74,7 @@ const swipe = (s) => ({
     ))(k(CONDENCE))(id)
   ),
 });
- const clear = (s) => {
+const clear = (s) => {
   let remains = filter(any(not(eq(-1))))(s.board);
   const isClear = !Math.max(...remains.flat());
   let count = s.board.length - remains.length;
