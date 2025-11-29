@@ -15,7 +15,7 @@ import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE, POINTS } = CONSTANTS;
-const IS_LANDSCAPE = window.matchMedia("orientation: landscape").matches;
+const IS_LANDSCAPE = window.matchMedia("(orientation: landscape)").matches;
 const _cols = IS_LANDSCAPE ? COLS : ROWS;
 const _rows = IS_LANDSCAPE ? ROWS : COLS;
 let points = 10;

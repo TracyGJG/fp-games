@@ -17,7 +17,8 @@ const domGameOver = document.querySelector('h2');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const FULL_CIRCLE = 2 * Math.PI;
-const IS_LANDSCAPE = window.matchMedia("orientation: landscape").matches;
+const IS_LANDSCAPE = window.matchMedia("(orientation: landscape)").matches;
+
 
 // Mutable state
 let state = initialState();
