@@ -17,6 +17,7 @@ const domGameOver = document.querySelector('h2');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const CELL_INSET = 2;
+const IS_LANDSCAPE = window.matchMedia("orientation: landscape").matches;
 
 // Mutable state
 let state = initialState();
@@ -112,6 +113,15 @@ window.addEventListener('keydown', (e) => {
   )?.[0];
   state = enqueue(state, action);
 });
+
+if (!IS_LANDSCAPE) {
+  const controls = document.getElementsByClassName('controls')[0];
+  controls.addEventListener('click', (evt) => {
+    if (evt.target.tagName === 'BUTTON') {
+      state = enqueue(state, evt.target.dataset.direction);
+    }
+  });
+}
 
 // Main Timer
 window.requestAnimationFrame(update());

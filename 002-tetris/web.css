@@ -20,3 +20,32 @@ h1,
 h2 {
   text-align: center;
 }
+
+section.controls {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  main {
+    zoom: 1.8;
+
+    &:has(h2[hidden]) section.controls {
+      display: block;
+    }
+  }
+
+  canvas {
+    zoom: 1.2;
+  }
+
+  section.controls {
+    zoom: 3;
+    padding: 0.25em;
+
+    & button {
+      width: 4em;
+      height: 2em;
+      margin: 0.25em;
+    }
+  }
+}

@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no" />
     <title>Tetris</title>
     <link rel="stylesheet" href="web.css" />
     <script src="web.js" type="module"></script>
@@ -11,6 +12,18 @@
       <h1>Score: 0</h1>
       <canvas id="canvas" width="300" height="680"></canvas>
       <h2 hidden>Game Over</h2>
+      <section class="controls">
+        <div>
+          <button data-direction="rotate">Rotate</button>
+        </div>
+        <div>
+          <button data-direction="moveLeft">Left</button>
+          <button data-direction="moveRight">Right</button>
+        </div>
+        <div>
+          <button data-direction="moveDown">Down</button>
+        </div>
+      </section>
     </main>
   </body>
 </html>

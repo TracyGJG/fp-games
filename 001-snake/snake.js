@@ -15,7 +15,11 @@ import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
 const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE, POINTS } = CONSTANTS;
+const IS_LANDSCAPE = window.matchMedia("orientation: landscape").matches;
+const _cols = IS_LANDSCAPE ? COLS : ROWS;
+const _rows = IS_LANDSCAPE ? ROWS : COLS;
 let points = 10;
+
 
 // Predicates
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
@@ -28,9 +32,9 @@ const nextMoves = (state) =>
   state.moves.length > 1 ? dropFirst(state.moves) : state.moves;
 const nextApple = (state) => {
   if (willEat(state)) {
-    (state.snake.length > ROWS) && (points = POINTS.LOW);
-    (state.snake.length > COLS) && (points = POINTS.MED);
-    (state.snake.length > (COLS + ROWS)) && (points = POINTS.HIGH);
+    (state.snake.length > _rows) && (points = POINTS.LOW);
+    (state.snake.length > _cols) && (points = POINTS.MED);
+    (state.snake.length > (_cols + _rows)) && (points = POINTS.HIGH);
     state.score += points;
     return rndPos(state);
   } 
@@ -67,11 +71,11 @@ const initialMove = () => {
 export const initialState = () => ({
   score: INITIAL_SCORE,
   lives: INITIAL_LIVES,
-  cols: COLS,
-  rows: ROWS,
+  cols: _cols,
+  rows: _rows,
   moves: initialMove(),
   snake: NON_SNAKE,
-  apple: { x: rnd(0)(COLS), y: rnd(0)(ROWS) },
+  apple: { x: rnd(0)(_cols), y: rnd(0)(_rows) },
 });
 
 // Update state

@@ -24,3 +24,38 @@ h1 {
 h2 {
   text-align: center;
 }
+
+canvas {
+  height: 600px;
+  width: 800px;
+}
+
+section.controls {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  main {
+    zoom: 1.5;
+
+    &:has(h2[hidden]) section.controls {
+      display: block;
+    }
+
+    canvas {
+      height: 800px;
+      width: 600px;
+    }
+  }
+
+  section.controls {
+    zoom: 3.5;
+    padding: 0.5em;
+
+    & button {
+      width: 4em;
+      height: 2.5em;
+      margin: 0.25em;
+    }
+  }
+}

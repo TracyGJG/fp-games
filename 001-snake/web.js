@@ -17,13 +17,14 @@ const domGameOver = document.querySelector('h2');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const FULL_CIRCLE = 2 * Math.PI;
+const IS_LANDSCAPE = window.matchMedia("orientation: landscape").matches;
 
 // Mutable state
 let state = initialState();
 
 // Position helpers
-const x = (c) => Math.round((c * canvas.width) / COLS);
-const y = (r) => Math.round((r * canvas.height) / ROWS);
+const x = (c) => Math.round((c * canvas.width) / (IS_LANDSCAPE ? COLS : ROWS));
+const y = (r) => Math.round((r * canvas.height) / (IS_LANDSCAPE ? ROWS : COLS));
 const CELL_WIDTH = x(1);
 const CELL_HEIGHT = y(1);
 const X_OFFSET = x(0.5);
@@ -90,6 +91,15 @@ window.addEventListener('keydown', (e) => {
   )?.[0];
   state = enqueue(state, action);
 });
+
+if (!IS_LANDSCAPE) {
+  const controls = document.getElementsByClassName('controls')[0];
+  controls.addEventListener('click', (evt) => {
+    if (evt.target.tagName === 'BUTTON') {
+      state = enqueue(state, evt.target.dataset.direction);
+    }
+  });
+}
 
 // Main Timer
 window.requestAnimationFrame(update());
