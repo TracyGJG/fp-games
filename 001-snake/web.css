@@ -10,6 +10,7 @@ body {
   padding: 0;
   text-align: center;
   align-content: center;
+  overflow: hidden;
 }
 
 main {
@@ -36,6 +37,7 @@ section.controls {
 
 @media (orientation: portrait) {
   main {
+    height: 95dvh;
     zoom: 1.5;
 
     &:has(h2[hidden]) section.controls {
