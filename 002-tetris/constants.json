@@ -55,7 +55,7 @@
   "CONDENCE": [10, 12, 14, 16, 18, 18, 16, 14, 12, 10],
   "EMPTY": "",
   "ESCAPE": "escape",
-  "FRAME_DELAY": 30,
+  "FRAME_DELAY": 15,
   "HEIGHT": 30,
   "INITIAL_POSITION": { "x": 3, "y": 0 },
   "INITIAL_SCORE": 0,
