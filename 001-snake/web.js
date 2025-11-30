@@ -7,8 +7,10 @@ const {
   ROWS,
   WEB_KEY_MAPPINGS: KEY_MAPPINGS,
   FRAME_DELAY,
+  FRAME_OFFSET,
   COLOURS,
   INITIAL_LIVES,
+  POINTS_DELTA,
 } = CONSTANTS;
 
 const domLives = document.querySelector('#lives');
@@ -73,7 +75,8 @@ const draw = () => {
 const update =
   (t1 = 0) =>
   (t2) => {
-    if (t2 - t1 > FRAME_DELAY) {
+    const scoreDelta = Math.floor(state.score / POINTS_DELTA) * FRAME_OFFSET;
+    if (t2 - t1 > Math.max(FRAME_DELAY - scoreDelta, FRAME_OFFSET)) {
       state = next(state);
       if (draw()) {
         window.requestAnimationFrame(update(t2));
