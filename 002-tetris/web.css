@@ -29,7 +29,7 @@ section.controls {
 @media (orientation: portrait) {
   main {
     height: 95dvh;
-    zoom: 1.8;
+    zoom: 1.75;
 
     &:has(h2[hidden]) section.controls {
       display: block;
