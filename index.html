@@ -4,19 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FP Games</title>
+    <style>
+      @media (orientation: portrait) {
+        body {
+          text-align: center;
+        }
+        a {
+          margin: 0.5em auto;
+          display: inline-grid;
+          text-align: center;
+
+          & > span {
+            padding: 0.5em;
+          }
+        }
+      }
+    </style>
   </head>
   <body>
     <h1>Functional Programming based Games</h1>
 
-    <ul>
-      <li>
-        <a href="./001-snake/web.html">Snake</a>
-      </li>
-      <li>
-        <a href="./002-tetris/web.html">Tetris</a>
-      </li>
-    </ul>
+    <a href="./001-snake/web.html">
+      <img src="./images/snake.png" alt="Snake game" width="200px" />
+      <span>Snake</span>
+    </a>
+    <a href="./002-tetris/web.html">
+      <img src="./images/tetris.png" alt="Tetris game" width="200px" />
+      <span>Tetris</span>
+    </a>
 
+    <hr />
     <footer>
       Original source code by
       <a
