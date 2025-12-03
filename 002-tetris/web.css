@@ -32,7 +32,17 @@ section.controls {
     zoom: 1.75;
 
     &:has(h2[hidden]) section.controls {
-      display: block;
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      align-items: center;
+
+      & > [data-direction='moveLeft'] {
+        justify-self: right;
+      }
+
+      & > [data-direction='moveRight'] {
+        justify-self: left;
+      }
     }
   }
 
@@ -44,9 +54,9 @@ section.controls {
     zoom: 3;
 
     & button {
-      width: 4em;
+      width: 4.5em;
       height: 1.5em;
-      margin: 00;
+      margin: 0;
     }
   }
 }
