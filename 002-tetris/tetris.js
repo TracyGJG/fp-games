@@ -23,7 +23,17 @@ import {
 import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, ROW_SCORE, MOVES, WAIT, CONDENCE, HEIGHT, INITIAL_SCORE, WIDTH } = CONSTANTS;
+const {
+  COLS,
+  ROWS,
+  ROW_SCORE,
+  MOVES,
+  WAIT,
+  CONDENCE,
+  HEIGHT,
+  INITIAL_SCORE,
+  WIDTH,
+} = CONSTANTS;
 
 const movePlayer = (f) => (s) => {
   if (isAnimating(s)) return s;
@@ -54,7 +64,7 @@ const Moves = {
       player: find(
         (f) =>
           Matrix.combine(Matrix.mountBoard(f(s.player))(s.board)) ==
-          Matrix.combine(Matrix.mountBoard(s.player)(s.board))
+          Matrix.combine(Matrix.mountBoard(s.player)(s.board)),
       )([
         Matrix.rotatePlayer,
         pipe(Matrix.movePlayer(MOVES.RIGHT), Matrix.rotatePlayer),
@@ -64,43 +74,45 @@ const Moves = {
         id,
       ])(s.player),
     };
-  }
+  },
 };
-const swipe = (s) => ({
+const swipeCompleteRows = (s) => ({
   ...s,
   board: s.board.map(
-    ifelse(all(
-      both(flip(gt)(0))(flip(lt)(10))
-    ))(k(CONDENCE))(id)
+    ifelse(all(both(flip(gt)(0))(flip(lt)(10))))(k(CONDENCE))(id),
   ),
 });
-const clear = (s) => {
+const clearBoard = (s) => {
   let remains = filter(any(not(eq(-1))))(s.board);
   const isClear = !Math.max(...remains.flat());
   let count = s.board.length - remains.length;
-  s.score += (ROW_SCORE[count] * (isClear ? 2 : 1));
+  s.score += ROW_SCORE[count] * (isClear ? 2 : 1);
   let newlines = rep(Matrix.row(0)(remains))(count);
   let board = concat(newlines)(remains);
   return { ...s, board };
 };
 const isAnimating = pipe(prop('board'), any(any(flip(gt)(9))));
-const animate = (s) => ({
+const animatePieces = (s) => ({
   ...s,
   board: map(
     map(
-      pipe(ifelse(flip(gt)(WIDTH))(add(1))(id), ifelse(flip(gt)(HEIGHT))(k(-1))(id))
-    )
+      pipe(
+        ifelse(flip(gt)(WIDTH))(add(1))(id),
+        ifelse(flip(gt)(HEIGHT))(k(-1))(id),
+      ),
+    ),
   )(s.board),
 });
 const timeToMove = (s) => !(s.time % s.wait);
-const nextTime = (s) => ({ ...s, time: s.time + 1 });
+const nextTimeFrame = (s) => ({ ...s, time: s.time + 1 });
 const maybeMoveDown = ifelse(isAnimating)(id)(
-  ifelse(timeToMove)(Moves.moveDown)(id)
+  ifelse(timeToMove)(Moves.moveDown)(id),
 );
+const endOfGame = Matrix.gameFinished;
 
-const render = (s) => {
+const renderBoard = (s) => {
   const score = `${s.score}`.padStart(6, ' ');
-  return {...s, rendering: `   Score:  ${score}\n${Matrix.rendering(s)}`};
+  return { ...s, rendering: `   Score:  ${score}\n${Matrix.rendering(s)}` };
 };
 
 export const initialState = k({
@@ -112,13 +124,13 @@ export const initialState = k({
 });
 
 export const next = pipe(
-  animate,
-  nextTime,
+  animatePieces,
+  nextTimeFrame,
   maybeMoveDown,
-  clear,
-  swipe,
-  Matrix.gameFinished,
-  render
+  clearBoard,
+  swipeCompleteRows,
+  endOfGame,
+  renderBoard,
 );
 
 export const enqueue = (state, action) =>
