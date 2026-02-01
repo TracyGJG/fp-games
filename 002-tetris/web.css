@@ -53,7 +53,7 @@ section.controls {
   section.controls {
     zoom: 3;
 
-    & button {
+    button {
       width: 4.5em;
       height: 1.5em;
       margin: 0;

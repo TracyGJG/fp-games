@@ -54,7 +54,7 @@ section.controls {
     zoom: 3.5;
     padding: 0.5em;
 
-    & button {
+    button {
       width: 4em;
       height: 2em;
       margin: 0;
