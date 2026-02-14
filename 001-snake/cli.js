@@ -5,12 +5,18 @@ import readline from 'readline';
 import { initialState, enqueue, next } from './snake.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { ANSI_ESCAPE, CLI_KEY_MAPPINGS: KEY_MAPPINGS, ESCAPE, FRAME_DELAY, NEW_LINE } = CONSTANTS;
+const {
+  ANSI_ESCAPE,
+  CLI_KEY_MAPPINGS: KEY_MAPPINGS,
+  ESCAPE,
+  FRAME_DELAY,
+  NEW_LINE,
+} = CONSTANTS;
 
 const clear = (..._) => `${ANSI_ESCAPE}c${_.join(NEW_LINE)}`;
 
 // Mutable state
-let state = initialState();
+let state = initialState(CONSTANTS.ROWS, CONSTANTS.COLS);
 let timer;
 
 // Game loop update
@@ -34,7 +40,7 @@ function update() {
       process.exit();
     }
     const action = KEY_MAPPINGS.find(([_, codes]) =>
-      codes.includes(key.name?.toUpperCase())
+      codes.includes(key.name?.toUpperCase()),
     )?.[0];
     state = enqueue(state, action);
   });

@@ -14,30 +14,29 @@ import {
 import Matrix from './matrix.js';
 
 import CONSTANTS from './constants.json' with { type: 'json' };
-const { COLS, ROWS, MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE, POINTS } = CONSTANTS;
-const IS_LANDSCAPE = window.matchMedia("(orientation: landscape)").matches;
-const _cols = IS_LANDSCAPE ? COLS : ROWS;
-const _rows = IS_LANDSCAPE ? ROWS : COLS;
+const { MOVES, NON_SNAKE, INITIAL_LIVES, INITIAL_SCORE, POINTS } = CONSTANTS;
+let _cols;
+let _rows;
 let points = 10;
-
 
 // Predicates
 const willEat = (state) => pointEq(nextHead(state))(state.apple);
 const willCrash = (state) => state.snake.find(pointEq(nextHead(state)));
-const validMove = (move) => (state) => move &&
-  ((state.moves[0].x + MOVES[move].x) || (state.moves[0].y + MOVES[move].y));
+const validMove = (move) => (state) =>
+  move &&
+  (state.moves[0].x + MOVES[move].x || state.moves[0].y + MOVES[move].y);
 
 // Next values based on state
 const nextMoves = (state) =>
   state.moves.length > 1 ? dropFirst(state.moves) : state.moves;
 const nextApple = (state) => {
   if (willEat(state)) {
-    (state.snake.length > _rows) && (points = POINTS.LOW);
-    (state.snake.length > _cols) && (points = POINTS.MED);
-    (state.snake.length > (_cols + _rows)) && (points = POINTS.HIGH);
+    state.snake.length > _rows && (points = POINTS.LOW);
+    state.snake.length > _cols && (points = POINTS.MED);
+    state.snake.length > _cols + _rows && (points = POINTS.HIGH);
     state.score += points;
     return rndPos(state);
-  } 
+  }
   return state.apple;
 };
 const nextHead = (state) => {
@@ -58,7 +57,7 @@ const nextSnake = (state) => {
     return NON_SNAKE;
   } else {
     return [nextHead(state)].concat(
-      willEat(state) ? state.snake : dropLast(state.snake)
+      willEat(state) ? state.snake : dropLast(state.snake),
     );
   }
 };
@@ -68,15 +67,20 @@ const initialMove = () => {
 };
 
 // Initial state
-export const initialState = () => ({
-  score: INITIAL_SCORE,
-  lives: INITIAL_LIVES,
-  cols: _cols,
-  rows: _rows,
-  moves: initialMove(),
-  snake: NON_SNAKE,
-  apple: { x: rnd(0)(_cols), y: rnd(0)(_rows) },
-});
+export const initialState = (longSide, shortSide) => {
+  _cols = longSide;
+  _rows = shortSide;
+
+  return {
+    score: INITIAL_SCORE,
+    lives: INITIAL_LIVES,
+    cols: _cols,
+    rows: _rows,
+    moves: initialMove(),
+    snake: NON_SNAKE,
+    apple: { x: rnd(0)(_cols), y: rnd(0)(_rows) },
+  };
+};
 
 // Update state
 export const next = spec({
@@ -90,6 +94,7 @@ export const next = spec({
   rendering: Matrix,
 });
 
-export const enqueue = (state, move) => validMove(move)(state)
-  ? merge(state)({ moves: append(state.moves)(MOVES[move]) })
-  : state;
+export const enqueue = (state, move) =>
+  validMove(move)(state)
+    ? merge(state)({ moves: append(state.moves)(MOVES[move]) })
+    : state;

@@ -19,15 +19,16 @@ const domGameOver = document.querySelector('h2');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const FULL_CIRCLE = 2 * Math.PI;
-const IS_LANDSCAPE = window.matchMedia("(orientation: landscape)").matches;
-
+const IS_LANDSCAPE = window.matchMedia('(orientation: landscape)').matches;
+const longSide = IS_LANDSCAPE ? COLS : ROWS;
+const shortSide = IS_LANDSCAPE ? ROWS : COLS;
 
 // Mutable state
-let state = initialState();
+let state = initialState(longSide, shortSide);
 
 // Position helpers
-const x = (c) => Math.round((c * canvas.width) / (IS_LANDSCAPE ? COLS : ROWS));
-const y = (r) => Math.round((r * canvas.height) / (IS_LANDSCAPE ? ROWS : COLS));
+const x = (c) => Math.round((c * canvas.width) / longSide);
+const y = (r) => Math.round((r * canvas.height) / shortSide);
 const CELL_WIDTH = x(1);
 const CELL_HEIGHT = y(1);
 const X_OFFSET = x(0.5);
@@ -53,7 +54,7 @@ const draw = () => {
     Y_OFFSET,
     FULL_CIRCLE,
     0,
-    FULL_CIRCLE
+    FULL_CIRCLE,
   );
   ctx.fill();
 
@@ -91,7 +92,7 @@ const update =
 // Key events
 window.addEventListener('keydown', (e) => {
   const action = KEY_MAPPINGS.find(([_key, codes]) =>
-    codes.includes(e.key.toUpperCase())
+    codes.includes(e.key.toUpperCase()),
   )?.[0];
   state = enqueue(state, action);
 });
